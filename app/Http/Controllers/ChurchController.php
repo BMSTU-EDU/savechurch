@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Church;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 
 class ChurchController extends Controller
@@ -17,14 +18,17 @@ class ChurchController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
     public function create()
     {
-        //
+		$this->authorize('is_admin');
+
+		return view('admin.church.create');
     }
 
     /**

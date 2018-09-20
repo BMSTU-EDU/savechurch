@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Church;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -24,5 +25,15 @@ class AdminController extends Controller
 	public function index()
 	{
 		return view('admin.home');
+	}
+
+	/**
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 */
+	public function churchesList()
+	{
+		$this->authorize('is_admin');
+		$churches = Church::paginate(10);
+		return view('admin.church.index', ['churches' => $churches]);
 	}
 }
