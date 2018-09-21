@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Church;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
 	/**
 	 * Create a new controller instance.
 	 *
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
 	 * @return void
 	 */
 	public function __construct()
@@ -24,6 +24,7 @@ class AdminController extends Controller
 	 */
 	public function index()
 	{
+		$this->authorize('is_admin');
 		return view('admin.home');
 	}
 

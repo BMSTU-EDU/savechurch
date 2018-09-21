@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Church;
+use App\Http\Requests\ChurchStoreRequest;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,9 @@ class ChurchController extends Controller
      */
     public function index()
     {
-        //
+        $churches = Church::paginate(15);
+
+		return view('churches.index', ['churches' => $churches]);
     }
 
 	/**
@@ -37,9 +40,11 @@ class ChurchController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ChurchStoreRequest $request)
     {
-        //
+		Church::create($request->all());
+
+		return redirect(route('admin.churches.list'));
     }
 
     /**
