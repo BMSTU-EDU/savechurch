@@ -7,7 +7,7 @@
                 <form action="{{ route('churches.store') }}" method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <label for="name">{{ __('churches.create_form.name') }}</label>
+                        <label for="name">{{ __('churches.admin.create_form.name') }}</label>
                         <input id="name" type="text" name="name"
                                class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}"
                                 value="{{ old('name') }}">
@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label for="latitude">{{ __('churches.create_form.latitude') }}</label>
+                                <label for="latitude">{{ __('churches.admin.create_form.latitude') }}</label>
                                 <input id="latitude" type="text" name="latitude"
                                        class="form-control {{ $errors->has('latitude') ? ' is-invalid' : '' }}"
                                        value="{{ old('latitude') }}">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label for="longitude">{{ __('churches.create_form.longitude') }}</label>
+                                <label for="longitude">{{ __('churches.admin.create_form.longitude') }}</label>
                                 <input id="longitude" type="text" name="longitude"
                                        class="form-control {{ $errors->has('longitude') ? ' is-invalid' : '' }}"
                                        value="{{ old('longitude') }}">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <button type="submit"
-                            class="btn btn-primary float-right">{{__('churches.create_form.add')}}</button>
+                            class="btn btn-primary float-right">{{__('churches.admin.create_form.add')}}</button>
                 </form>
             </div>
         </div>

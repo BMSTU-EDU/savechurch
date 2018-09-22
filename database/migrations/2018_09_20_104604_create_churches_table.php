@@ -18,6 +18,7 @@ class CreateChurchesTable extends Migration
 			$table->string('name', 150);
 			$table->geometry('coordinates')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

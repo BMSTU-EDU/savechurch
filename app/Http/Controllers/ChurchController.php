@@ -84,11 +84,15 @@ class ChurchController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Church  $church
+     * @param  \App\Church $church
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      */
     public function destroy(Church $church)
     {
-        //
+        $this->authorize('is_admin');
+        $church->delete();
+        return redirect(route('admin.churches.list'));
     }
 }

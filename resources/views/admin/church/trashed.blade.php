@@ -9,17 +9,13 @@
                         <h6><a href="{{route('churches.create')}}">{{ __('churches.admin.list.create') }}</a></h6>
                     </div>
                     <div class="col-6">
-                        <h6 class="float-right"><a href="{{route('admin.churches.list.trashed')}}">{{ __('churches.admin.list.trashed') }}</a></h6>
+                        <h6 class="float-right"><a href="{{route('admin.churches.list.trashed.flush')}}">{{ __('churches.admin.list.flush_trashed') }}</a></h6>
                     </div>
                 </div>
                 @foreach($churches as $church)
                     @component('admin.church.church_component', ['church' => $church])
                         @slot('right_link')
-                            <form action="{{ route('churches.destroy', $church->id) }}" method="post">
-                                @method('DELETE')
-                                @csrf
-                                <button class="btn btn-link p-0" type="submit">{{ __('churches.admin.list.delete') }}</button>
-                            </form>
+                            <a href="{{ route('admin.churches.list.trashed.restore', $church->id) }}">{{ __('churches.admin.list.restore') }}</a>
                         @endslot
                     @endcomponent
                 @endforeach
