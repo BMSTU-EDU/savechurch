@@ -16,6 +16,7 @@ class CreateChurchesTable extends Migration
         Schema::create('churches', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('name', 150);
+            $table->string('address', 300)->nullable();
 			$table->geometry('coordinates')->nullable();
             $table->timestamps();
             $table->softDeletes();

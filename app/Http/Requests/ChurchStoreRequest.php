@@ -25,9 +25,10 @@ class ChurchStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'	=> 'required|max:150',
-			'latitude'	=> 'nullable|numeric|required_with:longitude',
-			'longitude'	=> 'nullable|numeric|required_with:latitude'
+            'name' => 'required|max:150',
+            'address' => 'max:300',
+            'latitude' => 'nullable|numeric|required_with:longitude',
+            'longitude' => 'nullable|numeric|required_with:latitude'
         ];
     }
 }

@@ -5,6 +5,7 @@ return [
         'create_form' => [
             'name' => 'Наименование храма',
             'add' => 'Добавить',
+            'address'   => 'Адрес',
             'latitude' => 'Широта',
             'longitude' => 'Долгота'
         ],

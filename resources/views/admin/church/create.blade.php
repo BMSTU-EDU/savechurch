@@ -17,6 +17,17 @@
                             </span>
                         @endif
                     </div>
+                    <div class="form-group">
+                        <label for="address">{{ __('churches.admin.create_form.address') }}</label>
+                        <input id="address" type="text" name="address"
+                               class="form-control {{ $errors->has('address') ? ' is-invalid' : '' }}"
+                               value="{{ old('address') }}">
+                        @if ($errors->has('address'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('address') }}</strong>
+                            </span>
+                        @endif
+                    </div>
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">

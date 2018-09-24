@@ -6,9 +6,6 @@
                 <small class="text-muted">{{ $church->address }}</small>
             </div>
             <div class="col-6">
-                <h6 class="float-right">
-                    {{ $right_link }}
-                </h6>
             </div>
         </div>
         <div class="row">
