@@ -2,7 +2,7 @@
     <div class="card-body py-1">
         <div class="row">
             <div class="col-6">
-                <h5 class="my-0">{{ $church->name }}</h5>
+                <a href="{{ route('churches.front.show', $church->id) }}"><h5 class="my-0"> {{ $church->name }}</h5></a>
                 <small class="text-muted">{{ $church->address }}</small>
             </div>
             <div class="col-6">
