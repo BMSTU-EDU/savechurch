@@ -42,7 +42,7 @@ class ChurchController extends Controller
      */
     public function store(ChurchStoreRequest $request)
     {
-		Church::create($request->all());
+		Church::create($request->validated());
 
 		return redirect(route('admin.churches.list'));
     }
@@ -66,7 +66,7 @@ class ChurchController extends Controller
      */
     public function edit(Church $church)
     {
-        //
+		return view('admin.church.edit', ['church' => $church]);
     }
 
     /**
@@ -76,9 +76,10 @@ class ChurchController extends Controller
      * @param  \App\Church  $church
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Church $church)
+    public function update(ChurchStoreRequest $request, Church $church)
     {
-        //
+        $church->update($request->validated());
+		return redirect(route('admin.churches.list'));
     }
 
     /**
