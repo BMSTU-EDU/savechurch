@@ -130,15 +130,4 @@ class ChurchController extends Controller
 		Church::withTrashed()->where('id', $church_id)->restore();
 		return redirect(route('admin.churches.list.trashed'));
 	}
-
-	public function frontIndex()
-	{
-		$churches = Church::paginate(10);
-		return view('churches.index', ['churches' => $churches]);
-	}
-
-	public function frontShow(Church $church)
-	{
-		return view('churches.show', ['church' => $church]);
-	}
 }

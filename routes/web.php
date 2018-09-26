@@ -4,8 +4,8 @@ Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('/login', 'Auth\LoginController@login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('/', 'ChurchController@frontIndex');
-Route::get('/churches/{church}', 'ChurchController@frontShow')->name('churches.front.show');
+Route::get('/', 'ChurchFrontController@index');
+Route::get('/churches/{church}', 'ChurchFrontController@show')->name('churches.front.show');
 
 Route::prefix('admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('home');
