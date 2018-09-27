@@ -12,6 +12,8 @@ class Church extends Model
     protected $fillable = [
         'name',
         'address',
-        'coordinates'
+        'coordinates',
+		'description',
+		'purpose'
     ];
 }

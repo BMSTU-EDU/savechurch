@@ -5,7 +5,7 @@
         <label for="name">{{ __('churches.admin.create_form.name') }}</label>
         <input id="name" type="text" name="name"
                class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}"
-               value="{{ $name_value }}">
+               value="{{ old('name') ?? $church->name ?? ''}}">
         @if ($errors->has('name'))
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->first('name') }}</strong>
@@ -16,7 +16,7 @@
         <label for="address">{{ __('churches.admin.create_form.address') }}</label>
         <input id="address" type="text" name="address"
                class="form-control {{ $errors->has('address') ? ' is-invalid' : '' }}"
-               value="{{ $address_value }}">
+               value="{{ old('address') ?? $church->address ?? ''}}">
         @if ($errors->has('address'))
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->first('address') }}</strong>
@@ -29,7 +29,7 @@
                 <label for="latitude">{{ __('churches.admin.create_form.latitude') }}</label>
                 <input id="latitude" type="text" name="latitude"
                        class="form-control {{ $errors->has('latitude') ? ' is-invalid' : '' }}"
-                       value="{{ $latitude_value }}">
+                       value="{{ old('latitude') ?? $church->latitude ?? ''}}">
                 @if ($errors->has('latitude'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('latitude') }}</strong>
@@ -42,7 +42,7 @@
                 <label for="longitude">{{ __('churches.admin.create_form.longitude') }}</label>
                 <input id="longitude" type="text" name="longitude"
                        class="form-control {{ $errors->has('longitude') ? ' is-invalid' : '' }}"
-                       value="{{ $longitude_value }}">
+                       value="{{ old('longitude') ?? $church->longitude ?? ''}}">
                 @if ($errors->has('longitude'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('longitude') }}</strong>
@@ -50,6 +50,28 @@
                 @endif
             </div>
         </div>
+    </div>
+    <div class="form-group">
+        <label for="description">{{ __('churches.admin.create_form.description') }}</label>
+        <textarea id="description" type="text" name="description" rows="5"
+               class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}"
+        >{{ old('description') ?? $church->description ?? ''}}</textarea>
+        @if ($errors->has('description'))
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $errors->first('description') }}</strong>
+            </span>
+        @endif
+    </div>
+    <div class="form-group">
+        <label for="purpose">{{ __('churches.admin.create_form.purpose') }}</label>
+        <textarea id="purpose" type="text" name="purpose" rows="5"
+                  class="form-control {{ $errors->has('purpose') ? ' is-invalid' : '' }}"
+        >{{ old('purpose') ?? $church->purpose ?? ''}}</textarea>
+        @if ($errors->has('purpose'))
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $errors->first('purpose') }}</strong>
+            </span>
+        @endif
     </div>
     <button type="submit"
             class="btn btn-primary float-right">{{ $submit_button_text }}

@@ -17,6 +17,8 @@ class CreateChurchesTable extends Migration
             $table->increments('id');
 			$table->string('name', 150);
             $table->string('address', 300)->nullable();
+			$table->text('description')->nullable();
+			$table->text('purpose')->nullable();
 			$table->geometry('coordinates')->nullable();
             $table->timestamps();
             $table->softDeletes();

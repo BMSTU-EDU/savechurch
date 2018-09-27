@@ -8,7 +8,9 @@ return [
             'update' => 'Обновить',
             'address'   => 'Адрес',
             'latitude' => 'Широта',
-            'longitude' => 'Долгота'
+            'longitude' => 'Долгота',
+            'description' => 'Описание',
+			'purpose' => 'Цель пожертвований'
         ],
         'list' => [
             'create' => 'Создать новую запись',

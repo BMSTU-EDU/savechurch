@@ -8,18 +8,6 @@
                     @slot('action')
                         {{ route('churches.store') }}
                     @endslot
-                    @slot('name_value')
-                        {{ old('name') }}
-                    @endslot
-                    @slot('address_value')
-                        {{ old('address') }}
-                    @endslot
-                    @slot('latitude_value')
-                        {{ old('latitude') }}
-                    @endslot
-                    @slot('longitude_value')
-                        {{ old('longitude') }}
-                    @endslot
                     @slot('submit_button_text')
                         {{ __('churches.admin.create_form.add') }}
                     @endslot
