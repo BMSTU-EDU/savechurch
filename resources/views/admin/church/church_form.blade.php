@@ -1,4 +1,4 @@
-<form action="{{ $action }}" method="post">
+<form action="{{ $action }}" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
     {{ $method_field ?? ''}}
     <div class="form-group">
@@ -54,7 +54,7 @@
     <div class="form-group">
         <label for="description">{{ __('churches.admin.create_form.description') }}</label>
         <textarea id="description" type="text" name="description" rows="5"
-               class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}"
+                  class="form-control {{ $errors->has('description') ? ' is-invalid' : '' }}"
         >{{ old('description') ?? $church->description ?? ''}}</textarea>
         @if ($errors->has('description'))
             <span class="invalid-feedback" role="alert">
@@ -73,6 +73,7 @@
             </span>
         @endif
     </div>
+    <upload-images button_text="{{ __('churches.admin.create_form.add_image') }}"></upload-images>
     <button type="submit"
             class="btn btn-primary float-right">{{ $submit_button_text }}
     </button>

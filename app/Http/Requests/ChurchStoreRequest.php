@@ -28,7 +28,8 @@ class ChurchStoreRequest extends FormRequest
             'name' => 'required|max:150',
             'address' => 'max:300',
             'latitude' => 'nullable|numeric|required_with:longitude',
-            'longitude' => 'nullable|numeric|required_with:latitude'
+            'longitude' => 'nullable|numeric|required_with:latitude',
+			'images.*'	=> 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
     }
 }

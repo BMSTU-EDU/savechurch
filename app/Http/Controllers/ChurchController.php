@@ -49,6 +49,7 @@ class ChurchController extends Controller
 	 */
 	public function store(ChurchStoreRequest $request)
 	{
+		dd($request->validated());
 		Church::create($request->validated());
 		return redirect(route('churches.index'));
 	}
