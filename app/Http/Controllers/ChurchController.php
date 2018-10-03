@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Church;
 use App\Http\Requests\ChurchStoreRequest;
+use App\Http\Requests\ImageUploadRequest;
 
 class ChurchController extends Controller
 {

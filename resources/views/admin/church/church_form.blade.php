@@ -73,7 +73,7 @@
             </span>
         @endif
     </div>
-    <upload-images button_text="{{ __('churches.admin.create_form.add_image') }}"></upload-images>
+    <upload-images button_text="{{ __('churches.admin.create_form.add_image') }}" image_url_post="{{ route('image.upload') }}"></upload-images>
     <button type="submit"
             class="btn btn-primary float-right">{{ $submit_button_text }}
     </button>

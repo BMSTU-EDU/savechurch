@@ -50714,29 +50714,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['button_text'],
+    props: ['button_text', 'image_url_post'],
     name: "UploadImages",
     data: function data() {
         return {
             images: [],
+            listUpload: [],
             index: null,
-            files: 0
+            errors: []
         };
     },
     methods: {
-        selectPicture: function selectPicture(event) {
-            this.readURL(event.target);
-        },
-        readURL: function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+        uploadPicture: function uploadPicture(event) {
+            var _this = this;
 
-                reader.onload = function (e) {
-                    this.images.push(e.target.result);
-                    this.files++;
-                }.bind(this);
-
-                reader.readAsDataURL(input.files[0]);
+            this.errors = [];
+            if (event.target.files && event.target.files[0]) {
+                if (event.target.files[0].size > 1024 * 1024) {
+                    this.errors.push("File is to big. Maximum 1 mb.");
+                }
+                var formData = new FormData();
+                console.log(this.listUpload);
+                formData.append('image', event.target.files[0], event.target.files[0].name);
+                axios.post(this.image_url_post, formData).then(function (response) {
+                    _this.images.push(response.data.src);
+                    _this.listUpload.push(response.data.filename);
+                }).catch(function (error) {
+                    _this.errors = error.response.data.errors.image;
+                });
             }
         }
     }
@@ -50753,53 +50758,38 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "label",
-        { staticClass: "btn btn-link", attrs: { for: "file" + _vm.files } },
-        [_vm._v(_vm._s(_vm.button_text))]
-      ),
+      _c("label", { staticClass: "btn btn-link", attrs: { for: "image" } }, [
+        _vm._v(_vm._s(_vm.button_text))
+      ]),
       _vm._v(" "),
       _c("input", {
         staticStyle: { display: "none" },
-        attrs: { type: "file", name: "images[]", id: "file0" },
-        on: { change: _vm.selectPicture }
+        attrs: { type: "file", name: "image", id: "image" },
+        on: { change: _vm.uploadPicture }
       }),
       _vm._v(" "),
-      _c("input", {
-        staticStyle: { display: "none" },
-        attrs: { type: "file", name: "images[]", id: "file1" },
-        on: { change: _vm.selectPicture }
+      _vm._l(_vm.listUpload, function(imageName, index) {
+        return _c("input", {
+          attrs: { type: "hidden", name: "images[]", id: "image_" + index },
+          domProps: { value: imageName }
+        })
       }),
       _vm._v(" "),
-      _c("input", {
-        staticStyle: { display: "none" },
-        attrs: { type: "file", name: "images[]", id: "file2" },
-        on: { change: _vm.selectPicture }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        staticStyle: { display: "none" },
-        attrs: { type: "file", name: "images[]", id: "file3" },
-        on: { change: _vm.selectPicture }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        staticStyle: { display: "none" },
-        attrs: { type: "file", name: "images[]", id: "file4" },
-        on: { change: _vm.selectPicture }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        staticStyle: { display: "none" },
-        attrs: { type: "file", name: "images[]", id: "file5" },
-        on: { change: _vm.selectPicture }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        staticStyle: { display: "none" },
-        attrs: { type: "file", name: "images[]", id: "file6" },
-        on: { change: _vm.selectPicture }
-      }),
+      _vm.errors.length > 0
+        ? _c(
+            "div",
+            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+            [
+              _c(
+                "ul",
+                { staticClass: "m-0" },
+                _vm._l(_vm.errors, function(error) {
+                  return _c("li", [_vm._v(_vm._s(error))])
+                })
+              )
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c("vue-gallery", {
         attrs: { images: _vm.images, index: _vm.index },
@@ -50828,7 +50818,7 @@ var render = function() {
         })
       )
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []

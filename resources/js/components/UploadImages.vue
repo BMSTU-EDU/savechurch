@@ -1,13 +1,13 @@
 <template>
     <div>
-        <label :for="'file' + files" class="btn btn-link">{{ button_text }}</label>
-        <input type="file" name="images[]" id="file0" style="display: none" v-on:change="selectPicture"/>
-        <input type="file" name="images[]" id="file1" style="display: none" v-on:change="selectPicture"/>
-        <input type="file" name="images[]" id="file2" style="display: none" v-on:change="selectPicture"/>
-        <input type="file" name="images[]" id="file3" style="display: none" v-on:change="selectPicture"/>
-        <input type="file" name="images[]" id="file4" style="display: none" v-on:change="selectPicture"/>
-        <input type="file" name="images[]" id="file5" style="display: none" v-on:change="selectPicture"/>
-        <input type="file" name="images[]" id="file6" style="display: none" v-on:change="selectPicture"/>
+        <label for="image" class="btn btn-link">{{ button_text }}</label>
+        <input type="file" name="image" id="image" style="display: none" v-on:change="uploadPicture"/>
+        <input type="hidden" name="images[]" :id="'image_' + index" :value="imageName" v-for="imageName, index in listUpload">
+        <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
+            <ul class="m-0">
+                <li v-for="error in errors">{{ error }}</li>
+            </ul>
+        </div>
         <vue-gallery :images="images" :index="index" @close="index = null"></vue-gallery>
         <div class="row">
             <div class="col-3" v-for="image, imageIndex in images">
@@ -22,29 +22,35 @@
 
 <script>
     export default {
-        props: ['button_text'],
+        props: ['button_text', 'image_url_post'],
         name: "UploadImages",
         data: function () {
             return {
                 images: [],
+                listUpload: [],
                 index: null,
-                files: 0,
+                errors: []
             }
         },
         methods: {
-            selectPicture: function (event) {
-                this.readURL(event.target);
-            },
-            readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = (function (e) {
-                        this.images.push(e.target.result);
-                        this.files++;
-                    }).bind(this);
-
-                    reader.readAsDataURL(input.files[0]);
+            uploadPicture: function (event) {
+                this.errors = [];
+                if (event.target.files && event.target.files[0]) {
+                    if (event.target.files[0].size > 1024 * 1024){
+                        this.errors.push("File is to big. Maximum 1 mb.");
+                    }
+                    var formData = new FormData();
+                    console.log(this.listUpload);
+                    formData.append('image', event.target.files[0], event.target.files[0].name);
+                    axios
+                        .post(this.image_url_post, formData)
+                        .then(response => {
+                            this.images.push(response.data.src);
+                            this.listUpload.push(response.data.filename);
+                        })
+                        .catch(error => {
+                            this.errors = error.response.data.errors.image;
+                        });
                 }
             },
         }
