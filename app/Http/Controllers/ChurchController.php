@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Church;
 use App\Http\Requests\ChurchStoreRequest;
-use App\Http\Requests\ImageUploadRequest;
+use App\Image;
 
 class ChurchController extends Controller
 {
@@ -23,7 +23,7 @@ class ChurchController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @return \Illuminate\Http\Response
+	 * @return \Illuminate\Http\Responsesad
 	 */
 	public function index()
 	{
@@ -50,8 +50,16 @@ class ChurchController extends Controller
 	 */
 	public function store(ChurchStoreRequest $request)
 	{
-		dd($request->validated());
-		Church::create($request->validated());
+		$images = [];
+		$church = Church::create($request->validated());
+
+		if ($request->has('images')) {
+			foreach ($request->get('images') as $imageFileName) {
+				$images[] = new Image(['file_name' => $imageFileName]);
+			}
+			$church->images()->saveMany($images);
+		}
+
 		return redirect(route('churches.index'));
 	}
 
