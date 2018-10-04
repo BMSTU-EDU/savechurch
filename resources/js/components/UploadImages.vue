@@ -2,7 +2,8 @@
     <div>
         <label for="image" class="btn btn-link">{{ button_text }}</label>
         <input type="file" name="image" id="image" style="display: none" v-on:change="uploadPicture"/>
-        <input type="hidden" name="images[]" :id="'image_' + index" :value="imageName" v-for="imageName, index in listUpload">
+        <input type="hidden" name="images[]" :id="'image_' + index" :value="imageName"
+               v-for="imageName, index in images">
         <div class="alert alert-danger" role="alert" v-if="errors.length > 0">
             <ul class="m-0">
                 <li v-for="error in errors">{{ error }}</li>
@@ -14,7 +15,11 @@
                 <div class="image"
                      @click="index = imageIndex"
                      :style="{ backgroundImage: 'url(' + image + ')'}"
-                ></div>
+                >
+                </div>
+                <button type="button" class="close pr-1" aria-label="Close" @click="removeFile(image)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     </div>
@@ -22,21 +27,23 @@
 
 <script>
     export default {
-        props: ['button_text', 'image_url_post'],
+        props: ['button_text', 'image_url_post', 'uploaded', 'delete_url'],
         name: "UploadImages",
         data: function () {
             return {
                 images: [],
-                listUpload: [],
                 index: null,
                 errors: []
             }
+        },
+        mounted: function () {
+            this.images = JSON.parse(this.uploaded);
         },
         methods: {
             uploadPicture: function (event) {
                 this.errors = [];
                 if (event.target.files && event.target.files[0]) {
-                    if (event.target.files[0].size > 1024 * 1024){
+                    if (event.target.files[0].size > 1024 * 1024) {
                         this.errors.push("File is to big. Maximum 1 mb.");
                     }
                     var formData = new FormData();
@@ -46,13 +53,21 @@
                         .post(this.image_url_post, formData)
                         .then(response => {
                             this.images.push(response.data.src);
-                            this.listUpload.push(response.data.filename);
                         })
                         .catch(error => {
                             this.errors = error.response.data.errors.image;
                         });
                 }
             },
+            removeFile: function (removeFile) {
+                axios
+                    .delete(this.delete_url, {data: {file: removeFile}})
+                    .then(response => {
+                        this.images = this.images.filter(function (image) {
+                            return image !== removeFile;
+                        });
+                    });
+            }
         }
     }
 </script>

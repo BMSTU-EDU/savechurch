@@ -60,24 +60,16 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 49);
+/******/ 	return __webpack_require__(__webpack_require__.s = 72);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 49:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(50);
+(function webpackMissingModule() { throw new Error("Cannot find module \"C:\\Users\\kds\\work\\savechurch\\resources\\js\\admin-app.js\""); }());
 
-
-/***/ }),
-
-/***/ 50:
-/***/ (function(module, __webpack_exports__) {
-
-"use strict";
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Users\\kds\\work\\savechurch\\resources\\js\\admin-app.js'");
 
 /***/ })
 

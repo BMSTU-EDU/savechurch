@@ -30,9 +30,9 @@ class ChurchStoreRequest extends FormRequest
 			'address' => 'max:300',
 			'latitude' => 'nullable|numeric|required_with:longitude',
 			'longitude' => 'nullable|numeric|required_with:latitude',
-			'description'	=> 'nullable',
-			'purpose'	=> 'nullable',
-			'images.*' => ['sometimes', 'max:50', new FileExist()]
+			'description' => 'nullable',
+			'purpose' => 'nullable',
+			'images' => 'nullable'
 		];
 	}
 }

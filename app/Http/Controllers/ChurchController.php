@@ -55,7 +55,8 @@ class ChurchController extends Controller
 
 		if ($request->has('images')) {
 			foreach ($request->get('images') as $imageFileName) {
-				$images[] = new Image(['file_name' => $imageFileName]);
+				if (file_exists(public_path() . ImageController::IMAGE_PATH . $imageFileName))
+					$images[] = new Image(['file_name' => basename($imageFileName)]);
 			}
 			$church->images()->saveMany($images);
 		}

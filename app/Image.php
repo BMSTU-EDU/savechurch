@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Http\Controllers\UploadImageController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
@@ -11,6 +11,6 @@ class Image extends Model
 
 	public function getImageUrlAttribute()
 	{
-		return asset(UploadImageController::IMAGE_PATH . $this->file_name);
+		return asset(ImageController::IMAGE_PATH . $this->file_name);
 	}
 }

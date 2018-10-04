@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Http\Controllers\UploadImageController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -28,7 +28,7 @@ class Church extends Model
 	public function getImageUrlArrayAttribute()
 	{
 		return array_map(function ($imageName) {
-			return asset(UploadImageController::IMAGE_PATH . $imageName);
+			return asset(ImageController::IMAGE_PATH . $imageName);
 		}, $this->images()->pluck('file_name')->toArray());
 	}
 }

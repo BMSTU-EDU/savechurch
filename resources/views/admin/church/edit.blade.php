@@ -4,7 +4,13 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @component('admin.church.church_form', ['errors' => $errors, 'church' => $church])
+                @component('admin.church.church_form',
+                    [
+                        'errors' => $errors,
+                        'church' => $church,
+                        'uploaded' => json_encode($church->image_url_array),
+                        'delete_url' => route('image.entity_delete')
+                    ])
                     @slot('action')
                         {{ route('churches.update', $church->id) }}
                     @endslot
