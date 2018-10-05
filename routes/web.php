@@ -13,6 +13,7 @@ Route::prefix('admin')->group(function () {
 	Route::get('/churches/trashed', 'ChurchController@trashedChurches')->name('admin.churches.list.trashed');
 	Route::get('/churches/trashed/{church_id}/restore', 'ChurchController@restoreTrashed')->name('admin.churches.list.trashed.restore');
 	Route::get('/churches/trashed/flush', 'ChurchController@flushTrashed')->name('admin.churches.list.trashed.flush');
+	Route::delete('/image/entity_delete', 'ImageController@imageEntityDelete')->name('image.entity_delete');
 	Route::resource('churches', 'ChurchController');
 });
 

@@ -34,7 +34,7 @@ class ImageController extends Controller
 	//это для админского
 	public function imageEntityDelete(Request $request)
 	{
-		//$this->authorize('is_admin');
+		$this->authorize('is_admin');
 		$this->deleteFile($fileName = basename($request->get('file')));
 		if (($image = Image::where('file_name', $fileName)->first()) !== null) {
 			$image->delete();

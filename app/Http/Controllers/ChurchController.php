@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Church;
 use App\Http\Requests\ChurchStoreRequest;
 use App\Image;
+use Illuminate\Http\Request;
 
 class ChurchController extends Controller
 {
@@ -50,17 +51,8 @@ class ChurchController extends Controller
 	 */
 	public function store(ChurchStoreRequest $request)
 	{
-		$images = [];
 		$church = Church::create($request->validated());
-
-		if ($request->has('images')) {
-			foreach ($request->get('images') as $imageFileName) {
-				if (file_exists(public_path() . ImageController::IMAGE_PATH . $imageFileName))
-					$images[] = new Image(['file_name' => basename($imageFileName)]);
-			}
-			$church->images()->saveMany($images);
-		}
-
+		$this->saveChurchImages($church, $request);
 		return redirect(route('churches.index'));
 	}
 
@@ -96,6 +88,7 @@ class ChurchController extends Controller
 	public function update(ChurchStoreRequest $request, Church $church)
 	{
 		$church->update($request->validated());
+		$this->saveChurchImages($church, $request);
 		return redirect(route('churches.index'));
 	}
 
@@ -140,5 +133,18 @@ class ChurchController extends Controller
 	{
 		Church::withTrashed()->where('id', $church_id)->restore();
 		return redirect(route('admin.churches.list.trashed'));
+	}
+
+	private function saveChurchImages(Church $church, Request $request)
+	{
+		$images = [];
+		if ($request->has('images')) {
+			foreach ($request->get('images') as $imageFileName) {
+				$imageFileName = basename($imageFileName);
+				if (file_exists(public_path() . '/' . ImageController::IMAGE_PATH . $imageFileName))
+					$images[] = new Image(['file_name' => $imageFileName]);
+			}
+			$church->images()->saveMany($images);
+		}
 	}
 }
