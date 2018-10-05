@@ -20,6 +20,7 @@ class CreateChurchesTable extends Migration
 			$table->text('description')->nullable();
 			$table->text('purpose')->nullable();
 			$table->geometry('coordinates')->nullable();
+			$table->boolean('published')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

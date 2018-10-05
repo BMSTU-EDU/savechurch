@@ -73,6 +73,11 @@
             </span>
         @endif
     </div>
+    @if(!empty($errors->has('images')))
+        <div class="alert alert-danger" role="alert">
+            {{$errors->first('images')}}
+        </div>
+    @endif
     <upload-images button_text="{{ __('churches.admin.create_form.add_image') }}"
                    image_url_post="{{ route('image.upload') }}" uploaded="{{ $uploaded ?? '[]' }}"
                    delete_url="{{ $delete_url }}"></upload-images>

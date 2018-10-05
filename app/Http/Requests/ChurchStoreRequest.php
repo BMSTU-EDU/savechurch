@@ -32,7 +32,7 @@ class ChurchStoreRequest extends FormRequest
 			'longitude' => 'nullable|numeric|required_with:latitude',
 			'description' => 'nullable',
 			'purpose' => 'nullable',
-			'images' => 'nullable'
+			'images' => 'required'
 		];
 	}
 }
