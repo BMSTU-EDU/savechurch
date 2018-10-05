@@ -22,6 +22,7 @@
     "dependencies": {
         "vue-gallery": "^1.4.0",
         "vue-picture-swipe": "^0.4.0",
-        "vue-simple-photoswipe": "^1.0.3"
+        "vue-simple-photoswipe": "^1.0.3",
+        "vue-yandex-maps": "^0.7.15"
     }
 }

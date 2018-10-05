@@ -8,7 +8,7 @@
                     [
                         'errors' => $errors,
                         'church' => $church,
-                        'uploaded' => json_encode($church->image_url_array),
+                        'uploaded' => json_encode(array_merge($church->image_url_array, old('images') ?? [])),
                         'delete_url' => route('image.entity_delete')
                     ])
                     @slot('action')

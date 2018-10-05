@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-12">
                 <div class="row">
                     <div class="col-6">
                         <h6><a href="{{route('churches.create')}}"><i

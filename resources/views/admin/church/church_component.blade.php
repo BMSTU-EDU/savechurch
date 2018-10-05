@@ -18,7 +18,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <p>
+                        <p class="mt-2">
                             {{ $church->description }}
                         </p>
                     </div>

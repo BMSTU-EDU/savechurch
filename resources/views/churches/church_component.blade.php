@@ -7,11 +7,18 @@
             </div>
             <div class="col-9 pl-3">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-10">
                         <a href="{{ route('churches.front.show', $church->id) }}"><h5 class="my-0">{{ $church->name }}</h5>
                         </a>
                         <small class="text-muted">{{ $church->address }}</small>
-                        <p>
+                    </div>
+                    <div class="col-2">
+                        <i class="far fa-heart float-right" style="cursor: pointer"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p class="mt-2">
                             {{ $church->description }}
                         </p>
                     </div>

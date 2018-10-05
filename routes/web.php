@@ -5,6 +5,7 @@ Route::post('/login', 'Auth\LoginController@login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/', 'ChurchFrontController@index');
+Route::get('/map', 'ChurchFrontController@indexMap')->name('map');
 Route::get('/churches/{church}', 'ChurchFrontController@show')->name('churches.front.show');
 
 Route::prefix('admin')->group(function () {
