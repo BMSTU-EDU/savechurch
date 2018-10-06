@@ -1,9 +1,9 @@
-<div class="card mb-2 shadow bg-white rounded">
+<div class="card mb-2 shadow bg-white rounded" style="max-height: 220px">
     <div class="card-body py-1">
         <div class="row py-2 px-2">
             <div class="col-3 px-0">
                 <img src="{{ $church->images->count() > 0 ? $church->images->random()->image_url : '' }}"
-                     class="card-img">
+                     class="card-img" style="max-height: 196px">
             </div>
             <div class="col-9 pl-3">
                 <div class="row">
