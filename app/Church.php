@@ -15,7 +15,9 @@ class Church extends Model
 		'address',
 		'coordinates',
 		'description',
-		'purpose'
+		'purpose',
+        'latitude',
+        'longitude'
 	];
 
 	protected $with = ['images'];

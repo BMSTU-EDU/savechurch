@@ -21,4 +21,9 @@ class ChurchFrontController extends Controller
 	{
 		return view('churches.show', ['church' => $church]);
 	}
+
+    public function jsonChurchList()
+    {
+        return Church::all();
+    }
 }

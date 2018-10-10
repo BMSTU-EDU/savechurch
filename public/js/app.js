@@ -70,7 +70,7 @@
 "use strict";
 
 
-var bind = __webpack_require__(8);
+var bind = __webpack_require__(9);
 var isBuffer = __webpack_require__(26);
 
 /*global toString:true*/
@@ -621,10 +621,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(10);
+    adapter = __webpack_require__(11);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(10);
+    adapter = __webpack_require__(11);
   }
   return adapter;
 }
@@ -699,7 +699,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
 /* 4 */
@@ -2211,6 +2211,115 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4751,7 +4860,7 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -15122,7 +15231,7 @@ return jQuery;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15140,7 +15249,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -15330,7 +15439,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15341,7 +15450,7 @@ var settle = __webpack_require__(29);
 var buildURL = __webpack_require__(31);
 var parseHeaders = __webpack_require__(32);
 var isURLSameOrigin = __webpack_require__(33);
-var createError = __webpack_require__(11);
+var createError = __webpack_require__(12);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(34);
 
 module.exports = function xhrAdapter(config) {
@@ -15517,7 +15626,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15542,7 +15651,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15554,7 +15663,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15580,13 +15689,13 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = "/images/vendor/blueimp-gallery/loading.gif?05992d3434d3589b38a3a5431842d38f";
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -15764,7 +15873,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -15783,7 +15892,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(63)
+var listToStyles = __webpack_require__(64)
 
 /*
 type StyleObject = {
@@ -15992,120 +16101,11 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(19);
-module.exports = __webpack_require__(71);
+module.exports = __webpack_require__(75);
 
 
 /***/ }),
@@ -16116,7 +16116,7 @@ module.exports = __webpack_require__(71);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_gallery__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_gallery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_gallery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_yandex_maps__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_yandex_maps__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_yandex_maps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_yandex_maps__);
 __webpack_require__(20);
 
@@ -16126,8 +16126,9 @@ window.Vue = __webpack_require__(43);
 
 
 Vue.component('vue-gallery', __WEBPACK_IMPORTED_MODULE_0_vue_gallery___default.a);
-Vue.component('upload-images', __webpack_require__(60));
-Vue.component('image-gallery', __webpack_require__(66));
+Vue.component('upload-images', __webpack_require__(61));
+Vue.component('image-gallery', __webpack_require__(67));
+Vue.component('church-map', __webpack_require__(72));
 Vue.component('yandex-map', __WEBPACK_IMPORTED_MODULE_1_vue_yandex_maps__["yandexMap"]);
 Vue.component('yandex-marker', __WEBPACK_IMPORTED_MODULE_1_vue_yandex_maps__["ymapMarker"]);
 
@@ -16141,7 +16142,7 @@ var app = new Vue({
 
 
 window._ = __webpack_require__(21);
-window.Popper = __webpack_require__(6).default;
+window.Popper = __webpack_require__(7).default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -16150,7 +16151,7 @@ window.Popper = __webpack_require__(6).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(7);
+  window.$ = window.jQuery = __webpack_require__(8);
 
   __webpack_require__(23);
 } catch (e) {}
@@ -33349,7 +33350,7 @@ module.exports = function(module) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(7), __webpack_require__(6)) :
+   true ? factory(exports, __webpack_require__(8), __webpack_require__(7)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -37303,7 +37304,7 @@ module.exports = __webpack_require__(25);
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(8);
+var bind = __webpack_require__(9);
 var Axios = __webpack_require__(27);
 var defaults = __webpack_require__(3);
 
@@ -37338,9 +37339,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(13);
+axios.Cancel = __webpack_require__(14);
 axios.CancelToken = __webpack_require__(41);
-axios.isCancel = __webpack_require__(12);
+axios.isCancel = __webpack_require__(13);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -37493,7 +37494,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(11);
+var createError = __webpack_require__(12);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -37926,7 +37927,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(38);
-var isCancel = __webpack_require__(12);
+var isCancel = __webpack_require__(13);
 var defaults = __webpack_require__(3);
 var isAbsoluteURL = __webpack_require__(39);
 var combineURLs = __webpack_require__(40);
@@ -38086,7 +38087,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(13);
+var Cancel = __webpack_require__(14);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -49404,14 +49405,14 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(10)))
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
-   true ? module.exports = factory(__webpack_require__(47), __webpack_require__(58), __webpack_require__(15), __webpack_require__(59), __webpack_require__(5)) :
+   true ? module.exports = factory(__webpack_require__(47), __webpack_require__(58), __webpack_require__(16), __webpack_require__(59), __webpack_require__(5)) :
   typeof define === 'function' && define.amd ? define(['blueimp-gallery/css/blueimp-gallery.min.css', 'blueimp-gallery/js/blueimp-gallery-fullscreen.js', 'blueimp-gallery/js/blueimp-gallery-video.js', 'blueimp-gallery/js/blueimp-gallery-youtube.js', 'blueimp-gallery/js/blueimp-gallery.js'], factory) :
   (global.VueGallery = factory(null,null,null,null,global.blueimp));
 }(this, (function (blueimpGallery_min_css,blueimpGalleryFullscreen_js,blueimpGalleryVideo_js,blueimpGalleryYoutube_js,blueimp) { 'use strict';
@@ -49721,7 +49722,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";.blueimp-gallery,.blueimp-gallery>.slides>.slide>.slide-content{position:absolute;top:0;right:0;bottom:0;left:0;-moz-backface-visibility:hidden}.blueimp-gallery>.slides>.slide>.slide-content{margin:auto;width:auto;height:auto;max-width:100%;max-height:100%;opacity:1}.blueimp-gallery{position:fixed;z-index:999999;overflow:hidden;background:#000;background:rgba(0,0,0,.9);opacity:0;display:none;direction:ltr;-ms-touch-action:none;touch-action:none}.blueimp-gallery-carousel{position:relative;z-index:auto;margin:1em auto;padding-bottom:56.25%;box-shadow:0 0 10px #000;-ms-touch-action:pan-y;touch-action:pan-y}.blueimp-gallery-display{display:block;opacity:1}.blueimp-gallery>.slides{position:relative;height:100%;overflow:hidden}.blueimp-gallery-carousel>.slides{position:absolute}.blueimp-gallery>.slides>.slide{position:relative;float:left;height:100%;text-align:center;-webkit-transition-timing-function:cubic-bezier(.645,.045,.355,1);-moz-transition-timing-function:cubic-bezier(.645,.045,.355,1);-ms-transition-timing-function:cubic-bezier(.645,.045,.355,1);-o-transition-timing-function:cubic-bezier(.645,.045,.355,1);transition-timing-function:cubic-bezier(.645,.045,.355,1)}.blueimp-gallery,.blueimp-gallery>.slides>.slide>.slide-content{-webkit-transition:opacity .2s linear;-moz-transition:opacity .2s linear;-ms-transition:opacity .2s linear;-o-transition:opacity .2s linear;transition:opacity .2s linear}.blueimp-gallery>.slides>.slide-loading{background:url(" + escape(__webpack_require__(14)) + ") center no-repeat;background-size:64px 64px}.blueimp-gallery>.slides>.slide-loading>.slide-content{opacity:0}.blueimp-gallery>.slides>.slide-error{background:url(" + escape(__webpack_require__(50)) + ") center no-repeat}.blueimp-gallery>.slides>.slide-error>.slide-content{display:none}.blueimp-gallery>.next,.blueimp-gallery>.prev{position:absolute;top:50%;left:15px;width:40px;height:40px;margin-top:-23px;font-family:\"Helvetica Neue\",Helvetica,Arial,sans-serif;font-size:60px;font-weight:100;line-height:30px;color:#fff;text-decoration:none;text-shadow:0 0 2px #000;text-align:center;background:#222;background:rgba(0,0,0,.5);-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;border:3px solid #fff;-webkit-border-radius:23px;-moz-border-radius:23px;border-radius:23px;opacity:.5;cursor:pointer;display:none}.blueimp-gallery>.next{left:auto;right:15px}.blueimp-gallery>.close,.blueimp-gallery>.title{position:absolute;top:15px;left:15px;margin:0 40px 0 0;font-size:20px;line-height:30px;color:#fff;text-shadow:0 0 2px #000;opacity:.8;display:none}.blueimp-gallery>.close{padding:15px;right:15px;left:auto;margin:-15px;font-size:30px;text-decoration:none;cursor:pointer}.blueimp-gallery>.play-pause{position:absolute;right:15px;bottom:15px;width:15px;height:15px;background:url(" + escape(__webpack_require__(51)) + ") 0 0 no-repeat;cursor:pointer;opacity:.5;display:none}.blueimp-gallery-playing>.play-pause{background-position:-15px 0}.blueimp-gallery>.close:hover,.blueimp-gallery>.next:hover,.blueimp-gallery>.play-pause:hover,.blueimp-gallery>.prev:hover,.blueimp-gallery>.title:hover{color:#fff;opacity:1}.blueimp-gallery-controls>.close,.blueimp-gallery-controls>.next,.blueimp-gallery-controls>.play-pause,.blueimp-gallery-controls>.prev,.blueimp-gallery-controls>.title{display:block;-webkit-transform:translateZ(0);-moz-transform:translateZ(0);-ms-transform:translateZ(0);-o-transform:translateZ(0);transform:translateZ(0)}.blueimp-gallery-left>.prev,.blueimp-gallery-right>.next,.blueimp-gallery-single>.next,.blueimp-gallery-single>.play-pause,.blueimp-gallery-single>.prev{display:none}.blueimp-gallery>.close,.blueimp-gallery>.next,.blueimp-gallery>.play-pause,.blueimp-gallery>.prev,.blueimp-gallery>.slides>.slide>.slide-content{-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}body:last-child .blueimp-gallery>.slides>.slide-error{background-image:url(" + escape(__webpack_require__(52)) + ")}body:last-child .blueimp-gallery>.play-pause{width:20px;height:20px;background-size:40px 20px;background-image:url(" + escape(__webpack_require__(53)) + ")}body:last-child .blueimp-gallery-playing>.play-pause{background-position:-20px 0}*+html .blueimp-gallery>.slides>.slide{min-height:300px}*+html .blueimp-gallery>.slides>.slide>.slide-content{position:relative}.blueimp-gallery>.indicator{position:absolute;top:auto;right:15px;bottom:15px;left:15px;margin:0 40px;padding:0;list-style:none;text-align:center;line-height:10px;display:none}.blueimp-gallery>.indicator>li{display:inline-block;width:9px;height:9px;margin:6px 3px 0 3px;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;border:1px solid transparent;background:#ccc;background:rgba(255,255,255,.25) center no-repeat;border-radius:5px;box-shadow:0 0 2px #000;opacity:.5;cursor:pointer}.blueimp-gallery>.indicator>.active,.blueimp-gallery>.indicator>li:hover{background-color:#fff;border-color:#fff;opacity:1}.blueimp-gallery>.indicator>li:after{opacity:0;display:block;position:absolute;content:'';top:-5em;width:75px;height:75px;transition:transform .6s ease-out,opacity .4s ease-out;transform:translateX(-50%) translateY(0) translateZ(0);pointer-events:none}.blueimp-gallery>.indicator>li:hover:after{opacity:1;border-radius:50%;background:inherit;transform:translateX(-50%) translateY(-5px) translateZ(0)}.blueimp-gallery>.indicator>.active:after{display:none}.blueimp-gallery-controls>.indicator{display:block;-webkit-transform:translateZ(0);-moz-transform:translateZ(0);-ms-transform:translateZ(0);-o-transform:translateZ(0);transform:translateZ(0)}.blueimp-gallery-single>.indicator{display:none}.blueimp-gallery>.indicator{-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}*+html .blueimp-gallery>.indicator>li{display:inline}.blueimp-gallery>.slides>.slide>.video-content>img{position:absolute;top:0;right:0;bottom:0;left:0;margin:auto;width:auto;height:auto;max-width:100%;max-height:100%;-moz-backface-visibility:hidden}.blueimp-gallery>.slides>.slide>.video-content>video{position:absolute;top:0;left:0;width:100%;height:100%}.blueimp-gallery>.slides>.slide>.video-content>iframe{position:absolute;top:100%;left:0;width:100%;height:100%;border:none}.blueimp-gallery>.slides>.slide>.video-playing>iframe{top:0}.blueimp-gallery>.slides>.slide>.video-content>a{position:absolute;top:50%;right:0;left:0;margin:-64px auto 0;width:128px;height:128px;background:url(" + escape(__webpack_require__(54)) + ") center no-repeat;opacity:.8;cursor:pointer}.blueimp-gallery>.slides>.slide>.video-content>a:hover{opacity:1}.blueimp-gallery>.slides>.slide>.video-playing>a,.blueimp-gallery>.slides>.slide>.video-playing>img{display:none}.blueimp-gallery>.slides>.slide>.video-content>video{display:none}.blueimp-gallery>.slides>.slide>.video-playing>video{display:block}.blueimp-gallery>.slides>.slide>.video-loading>a{background:url(" + escape(__webpack_require__(14)) + ") center no-repeat;background-size:64px 64px}body:last-child .blueimp-gallery>.slides>.slide>.video-content:not(.video-loading)>a{background-image:url(" + escape(__webpack_require__(55)) + ")}*+html .blueimp-gallery>.slides>.slide>.video-content{height:100%}*+html .blueimp-gallery>.slides>.slide>.video-content>a{left:50%;margin-left:-64px}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";.blueimp-gallery,.blueimp-gallery>.slides>.slide>.slide-content{position:absolute;top:0;right:0;bottom:0;left:0;-moz-backface-visibility:hidden}.blueimp-gallery>.slides>.slide>.slide-content{margin:auto;width:auto;height:auto;max-width:100%;max-height:100%;opacity:1}.blueimp-gallery{position:fixed;z-index:999999;overflow:hidden;background:#000;background:rgba(0,0,0,.9);opacity:0;display:none;direction:ltr;-ms-touch-action:none;touch-action:none}.blueimp-gallery-carousel{position:relative;z-index:auto;margin:1em auto;padding-bottom:56.25%;box-shadow:0 0 10px #000;-ms-touch-action:pan-y;touch-action:pan-y}.blueimp-gallery-display{display:block;opacity:1}.blueimp-gallery>.slides{position:relative;height:100%;overflow:hidden}.blueimp-gallery-carousel>.slides{position:absolute}.blueimp-gallery>.slides>.slide{position:relative;float:left;height:100%;text-align:center;-webkit-transition-timing-function:cubic-bezier(.645,.045,.355,1);-moz-transition-timing-function:cubic-bezier(.645,.045,.355,1);-ms-transition-timing-function:cubic-bezier(.645,.045,.355,1);-o-transition-timing-function:cubic-bezier(.645,.045,.355,1);transition-timing-function:cubic-bezier(.645,.045,.355,1)}.blueimp-gallery,.blueimp-gallery>.slides>.slide>.slide-content{-webkit-transition:opacity .2s linear;-moz-transition:opacity .2s linear;-ms-transition:opacity .2s linear;-o-transition:opacity .2s linear;transition:opacity .2s linear}.blueimp-gallery>.slides>.slide-loading{background:url(" + escape(__webpack_require__(15)) + ") center no-repeat;background-size:64px 64px}.blueimp-gallery>.slides>.slide-loading>.slide-content{opacity:0}.blueimp-gallery>.slides>.slide-error{background:url(" + escape(__webpack_require__(50)) + ") center no-repeat}.blueimp-gallery>.slides>.slide-error>.slide-content{display:none}.blueimp-gallery>.next,.blueimp-gallery>.prev{position:absolute;top:50%;left:15px;width:40px;height:40px;margin-top:-23px;font-family:\"Helvetica Neue\",Helvetica,Arial,sans-serif;font-size:60px;font-weight:100;line-height:30px;color:#fff;text-decoration:none;text-shadow:0 0 2px #000;text-align:center;background:#222;background:rgba(0,0,0,.5);-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;border:3px solid #fff;-webkit-border-radius:23px;-moz-border-radius:23px;border-radius:23px;opacity:.5;cursor:pointer;display:none}.blueimp-gallery>.next{left:auto;right:15px}.blueimp-gallery>.close,.blueimp-gallery>.title{position:absolute;top:15px;left:15px;margin:0 40px 0 0;font-size:20px;line-height:30px;color:#fff;text-shadow:0 0 2px #000;opacity:.8;display:none}.blueimp-gallery>.close{padding:15px;right:15px;left:auto;margin:-15px;font-size:30px;text-decoration:none;cursor:pointer}.blueimp-gallery>.play-pause{position:absolute;right:15px;bottom:15px;width:15px;height:15px;background:url(" + escape(__webpack_require__(51)) + ") 0 0 no-repeat;cursor:pointer;opacity:.5;display:none}.blueimp-gallery-playing>.play-pause{background-position:-15px 0}.blueimp-gallery>.close:hover,.blueimp-gallery>.next:hover,.blueimp-gallery>.play-pause:hover,.blueimp-gallery>.prev:hover,.blueimp-gallery>.title:hover{color:#fff;opacity:1}.blueimp-gallery-controls>.close,.blueimp-gallery-controls>.next,.blueimp-gallery-controls>.play-pause,.blueimp-gallery-controls>.prev,.blueimp-gallery-controls>.title{display:block;-webkit-transform:translateZ(0);-moz-transform:translateZ(0);-ms-transform:translateZ(0);-o-transform:translateZ(0);transform:translateZ(0)}.blueimp-gallery-left>.prev,.blueimp-gallery-right>.next,.blueimp-gallery-single>.next,.blueimp-gallery-single>.play-pause,.blueimp-gallery-single>.prev{display:none}.blueimp-gallery>.close,.blueimp-gallery>.next,.blueimp-gallery>.play-pause,.blueimp-gallery>.prev,.blueimp-gallery>.slides>.slide>.slide-content{-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}body:last-child .blueimp-gallery>.slides>.slide-error{background-image:url(" + escape(__webpack_require__(52)) + ")}body:last-child .blueimp-gallery>.play-pause{width:20px;height:20px;background-size:40px 20px;background-image:url(" + escape(__webpack_require__(53)) + ")}body:last-child .blueimp-gallery-playing>.play-pause{background-position:-20px 0}*+html .blueimp-gallery>.slides>.slide{min-height:300px}*+html .blueimp-gallery>.slides>.slide>.slide-content{position:relative}.blueimp-gallery>.indicator{position:absolute;top:auto;right:15px;bottom:15px;left:15px;margin:0 40px;padding:0;list-style:none;text-align:center;line-height:10px;display:none}.blueimp-gallery>.indicator>li{display:inline-block;width:9px;height:9px;margin:6px 3px 0 3px;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;border:1px solid transparent;background:#ccc;background:rgba(255,255,255,.25) center no-repeat;border-radius:5px;box-shadow:0 0 2px #000;opacity:.5;cursor:pointer}.blueimp-gallery>.indicator>.active,.blueimp-gallery>.indicator>li:hover{background-color:#fff;border-color:#fff;opacity:1}.blueimp-gallery>.indicator>li:after{opacity:0;display:block;position:absolute;content:'';top:-5em;width:75px;height:75px;transition:transform .6s ease-out,opacity .4s ease-out;transform:translateX(-50%) translateY(0) translateZ(0);pointer-events:none}.blueimp-gallery>.indicator>li:hover:after{opacity:1;border-radius:50%;background:inherit;transform:translateX(-50%) translateY(-5px) translateZ(0)}.blueimp-gallery>.indicator>.active:after{display:none}.blueimp-gallery-controls>.indicator{display:block;-webkit-transform:translateZ(0);-moz-transform:translateZ(0);-ms-transform:translateZ(0);-o-transform:translateZ(0);transform:translateZ(0)}.blueimp-gallery-single>.indicator{display:none}.blueimp-gallery>.indicator{-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}*+html .blueimp-gallery>.indicator>li{display:inline}.blueimp-gallery>.slides>.slide>.video-content>img{position:absolute;top:0;right:0;bottom:0;left:0;margin:auto;width:auto;height:auto;max-width:100%;max-height:100%;-moz-backface-visibility:hidden}.blueimp-gallery>.slides>.slide>.video-content>video{position:absolute;top:0;left:0;width:100%;height:100%}.blueimp-gallery>.slides>.slide>.video-content>iframe{position:absolute;top:100%;left:0;width:100%;height:100%;border:none}.blueimp-gallery>.slides>.slide>.video-playing>iframe{top:0}.blueimp-gallery>.slides>.slide>.video-content>a{position:absolute;top:50%;right:0;left:0;margin:-64px auto 0;width:128px;height:128px;background:url(" + escape(__webpack_require__(54)) + ") center no-repeat;opacity:.8;cursor:pointer}.blueimp-gallery>.slides>.slide>.video-content>a:hover{opacity:1}.blueimp-gallery>.slides>.slide>.video-playing>a,.blueimp-gallery>.slides>.slide>.video-playing>img{display:none}.blueimp-gallery>.slides>.slide>.video-content>video{display:none}.blueimp-gallery>.slides>.slide>.video-playing>video{display:block}.blueimp-gallery>.slides>.slide>.video-loading>a{background:url(" + escape(__webpack_require__(15)) + ") center no-repeat;background-size:64px 64px}body:last-child .blueimp-gallery>.slides>.slide>.video-content:not(.video-loading)>a{background-image:url(" + escape(__webpack_require__(55)) + ")}*+html .blueimp-gallery>.slides>.slide>.video-content{height:100%}*+html .blueimp-gallery>.slides>.slide>.video-content>a{left:50%;margin-left:-64px}", ""]);
 
 // exports
 
@@ -50352,7 +50353,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   'use strict'
   if (true) {
     // Register as an anonymous AMD module:
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2), __webpack_require__(15)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2), __webpack_require__(16)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
@@ -50567,16 +50568,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
+!function(t,e){ true?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e(t.vueYandexMaps={})}(this,function(t){"use strict";var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},r=function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")},o=function(){function t(t,e){for(var r=0;r<e.length;r++){var o=e[r];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}return function(e,r,o){return r&&t(e.prototype,r),o&&t(e,o),e}}(),n=function(t){if(Array.isArray(t)){for(var e=0,r=Array(t.length);e<t.length;e++)r[e]=t[e];return r}return Array.from(t)};function a(t){return t.charAt(0).toUpperCase()+t.slice(1)}function i(t,r){var o=[];return function t(r,n){if(r===n)return!0;if(r instanceof Date&&n instanceof Date)return+r==+n;if("object"!==(void 0===r?"undefined":e(r))||"object"!==(void 0===n?"undefined":e(n)))return!1;if(function(t,e){for(var r=o.length;r--;)if(!(o[r][0]!==t&&o[r][0]!==e||o[r][1]!==e&&o[r][1]!==t))return!0;return!1}(r,n))return!0;o.push([r,n]);var a=Object.keys(r),i=a.length;if(Object.keys(n).length!==i)return!1;for(;i--;)if(!t(r[a[i]],n[a[i]]))return!1;return!0}(t,r)}var s=new(function(){function t(){r(this,t),this.events={},this.ymapReady=!1,this.scriptIsNotAttached=!0}return o(t,[{key:"$on",value:function(t,e){var r=this;return this.events[t]||(this.events[t]=[]),this.events[t].push(e),function(){r.events[t]=r.events[t].filter(function(t){return e!==t})}}},{key:"$emit",value:function(t,e){var r=this.events[t];r&&r.forEach(function(t){return t(e)})}}]),t}()),c=["fullscreenControl","geolocationControl","routeEditor","rulerControl","searchControl","trafficControl","typeSelector","zoomControl"];function l(t){return 0===t.filter(function(t){return![].concat(c,["default"]).includes(t)}).length}function u(t,e){var r=a(t);if(!e)return r;switch(r){case"Placemark":return"Point";case"Polyline":return"LineString";default:return r}}function p(t,r){var o=r?{type:"Feature",id:t.properties.markerId,geometry:{type:t.markerType,coordinates:t.coords},properties:t.properties,options:t.options}:new ymaps[t.markerType](t.coords,t.properties,t.options);return o.clusterName=t.clusterName,r||function(t,r){if(t&&"object"===(void 0===t?"undefined":e(t)))for(var o in t)r.events.add(o,t[o])}(t.callbacks,o),o}var m={data:function(){return{ymapEventBus:s,ymapId:"yandexMap"+Math.round(1e5*Math.random()),myMap:{},style:this.ymapClass?"":"width: 100%; height: 100%;"}},props:{coords:{type:Array,validator:function(t){return!t.filter(function(t){return isNaN(t)}).length},required:!0},zoom:{validator:function(t){return!isNaN(t)},default:18},clusterOptions:{type:Object,default:function(){return{}}},clusterCallbacks:{type:Object,default:function(){return{}}},behaviors:{type:Array,default:function(){return["default"]}},controls:{type:Array,default:function(){return["default"]},validator:function(t){return l(t)}},detailedControls:{type:Object,validator:function(t){return l(Object.keys(t))}},scrollZoom:{type:Boolean,default:!0},zoomControl:Object,mapType:{type:String,default:"map",validator:function(t){return["map","satellite","hybrid"].includes(t)}},placemarks:{type:Array,default:function(){return[]}},useObjectManager:{type:Boolean,default:!1},objectManagerClusterize:{type:Boolean,default:!0},ymapClass:String,initWithoutMarkers:{type:Boolean,default:!0},mapLink:String},computed:{coordinates:function(){return this.coords.map(function(t){return+t})}},methods:{init:function(){var t=this;if(window.ymaps&&ymaps.GeoObjectCollection&&(this.initWithoutMarkers||this.$slots.default||this.placemarks.length)){this.$emit("map-initialization-started");for(var e=[],r=this.$slots.default&&this.$slots.default.map(function(t){var e=t.componentOptions&&t.componentOptions.propsData;if(e){var r={};if(e.balloonTemplate){r={balloonContentLayout:ymaps.templateLayoutFactory.createClass(e.balloonTemplate)}}var o={markerId:e.markerId,markerType:e.markerType,coords:function t(e){return e.map(function(e){return Array.isArray(e)?t(e):+e})}(e.coords),hintContent:e.hintContent,markerFill:e.markerFill,circleRadius:+e.circleRadius,clusterName:e.clusterName,markerStroke:e.markerStroke,balloon:e.balloon,callbacks:e.callbacks,properties:e.properties,options:e.options,balloonOptions:r};return e.icon&&"default#image"===e.icon.layout?(o.iconLayout=e.icon.layout,o.iconImageHref=e.icon.imageHref,o.iconImageSize=e.icon.imageSize,o.iconImageOffset=e.icon.imageOffset):o.icon=e.icon,o}}).filter(function(t){return t&&t.markerType})||[],o=0;o<r.length;o++){var i=r[o],s=u(i.markerType,this.useObjectManager),c={hintContent:i.hintContent,iconContent:i.icon&&i.icon.content,markerId:i.markerId},l=i.balloon?{balloonContentHeader:i.balloon.header,balloonContentBody:i.balloon.body,balloonContentFooter:i.balloon.footer}:{},m=Object.assign(c,l,i.properties),d=i.iconLayout?{iconLayout:i.iconLayout,iconImageHref:i.iconImageHref,iconImageSize:i.iconImageSize,iconImageOffset:i.iconImageOffset}:{preset:i.icon&&"islands#"+(v=i,(v.icon.color||"blue")+(v.icon.glyph?a(v.icon.glyph):v.icon.content?"Stretchy":""))+"Icon"},f=i.markerStroke?{strokeColor:i.markerStroke.color||"0066ffff",strokeOpacity:parseFloat(i.markerStroke.opacity)>=0?parseFloat(i.markerStroke.opacity):1,strokeStyle:i.markerStroke.style,strokeWidth:parseFloat(i.markerStroke.width)>=0?parseFloat(i.markerStroke.width):1}:{},y=i.markerFill?{fill:i.markerFill.enabled||!0,fillColor:i.markerFill.color||"0066ff99",fillOpacity:parseFloat(i.markerFill.opacity)>=0?parseFloat(i.markerFill.opacity):1,fillImageHref:i.markerFill.imageHref||""}:{},h=Object.assign(d,f,y,i.balloonOptions,i.options);"Circle"===s&&(i.coords=[i.coords,i.circleRadius]);var b=p({properties:m,options:h,markerType:s,coords:i.coords,clusterName:i.clusterName,callbacks:i.callbacks},this.useObjectManager);e.push(b)}var v;if(this.placemarks){var k=this.useObjectManager?"Point":"Placemark";this.placemarks.forEach(function(r){var o=r.properties,n=r.options,a=void 0===n?{}:n,i=r.coords,s=r.clusterName,c=r.callbacks,l=r.balloonTemplate;if(l){var u=ymaps.templateLayoutFactory.createClass(l);a.balloonContentLayout=u}var m=p({properties:o,options:a,markerType:k,coords:i,clusterName:s,callbacks:c},t.useObjectManager);e.push(m)})}if(this.myMap=new ymaps.Map(this.ymapId,{center:this.coordinates,zoom:+this.zoom,behaviors:this.behaviors,controls:this.controls,type:"yandex#"+this.mapType}),this.zoomControl&&(this.myMap.controls.remove("zoomControl"),this.myMap.controls.add(new ymaps.control.ZoomControl(this.zoomControl))),this.detailedControls){Object.keys(this.detailedControls).forEach(function(e){t.myMap.controls.remove(e),t.myMap.controls.add(e,t.detailedControls[e])})}!1===this.scrollZoom&&this.myMap.behaviors.disable("scrollZoom");var g={options:this.clusterOptions,callbacks:this.clusterCallbacks,map:this.myMap,useObjectManager:this.useObjectManager,objectManagerClusterize:this.objectManagerClusterize};!function(t,e){var r=e.options,o=e.callbacks,a=e.map,i=e.useObjectManager,s=e.objectManagerClusterize,c={},l=[],u=!0,p=!1,m=void 0;try{for(var d,f=t[Symbol.iterator]();!(u=(d=f.next()).done);u=!0){var y=d.value;y.clusterName?c[y.clusterName]=c[y.clusterName]?[].concat(n(c[y.clusterName]),[y]):[y]:l.push(y)}}catch(t){p=!0,m=t}finally{try{!u&&f.return&&f.return()}finally{if(p)throw m}}for(var h in c){var b=r[h]||{},v=o[h]||{},k=b.layout||"\n      <div>{{ properties.balloonContentHeader }}</div>\n      <div>{{ properties.balloonContentBody }}</div>\n      <div>{{ properties.balloonContentFooter }}</div>\n    ";if(b.clusterBalloonItemContentLayout=ymaps.templateLayoutFactory.createClass(k),i){var g=new ymaps.ObjectManager(Object.assign({clusterize:s},b));for(var C in v)g.clusters.events.add(C,v[C]);g.add(c[h]),a.geoObjects.add(g)}else{var O=new ymaps.Clusterer(b);for(var M in v)O.events.add(M,v[M]);O.add(c[h]),a.geoObjects.add(O)}}if(l.length){var j=i?new ymaps.ObjectManager({clusterize:!1}):new ymaps.GeoObjectCollection;l.forEach(function(t){return j.add(t)}),a.geoObjects.add(j)}}(e,g),this.$emit("map-was-initialized",this.myMap)}}},watch:{coordinates:function(t){this.myMap.panTo&&this.myMap.panTo(t)},placemarks:function(){window.ymaps&&(this.myMap.destroy&&this.myMap.destroy(),this.init())},zoom:function(){this.myMap.setZoom(this.zoom)}},render:function(t){return t("section",{class:"ymap-container"},[t("div",{attrs:{id:this.ymapId,class:this.ymapClass,style:this.style}}),t("div",{attrs:{class:"ymap-markers"}},[this.$slots.default])])},mounted:function(){var t=this;if(this.observer=new MutationObserver(function(t){this.myMap.destroy&&this.myMap.destroy(),this.init()}.bind(this)),this.observer.observe(document.querySelector(".ymap-markers"),{attributes:!0,childList:!0,characterData:!0,subtree:!0}),this.ymapEventBus.scriptIsNotAttached){var e=document.createElement("SCRIPT"),r=this.mapLink||"https://api-maps.yandex.ru/2.1/?lang=ru_RU";e.setAttribute("src",r),e.setAttribute("async",""),e.setAttribute("defer",""),document.body.appendChild(e),this.ymapEventBus.scriptIsNotAttached=!1,e.onload=function(){t.ymapEventBus.ymapReady=!0,t.ymapEventBus.$emit("scriptIsLoaded")}}this.ymapEventBus.ymapReady?ymaps.ready(this.init):this.ymapEventBus.$on("scriptIsLoaded",function(){t.ymapEventBus.initMap=function(){t.myMap.destroy(),t.init()},ymaps.ready(t.init)})},beforeDestroy:function(){this.myMap.geoObjects&&this.myMap.geoObjects.removeAll(),this.observer.disconnect()}},d={data:function(){return{ymapEventBus:s,unwatchArr:[]}},props:{coords:{type:Array,required:!0},hintContent:String,icon:Object,balloon:Object,markerType:{type:String,required:!0},markerFill:Object,markerStroke:Object,clusterName:String,circleRadius:{validator:function(t){return!isNaN(t)},default:1e3},callbacks:Object,balloonTemplate:String,markerId:{type:[String,Number],required:!0},properties:Object,options:Object},render:function(){},mounted:function(){var t=this;for(var e in this.$props)this.unwatchArr.push(this.$watch(e,function(e,r){return o=e,n=r,a=t.ymapEventBus,void(i(o,n)||(a.rerender&&clearTimeout(a.rerender),a.rerender=setTimeout(function(){return a.initMap&&a.initMap()},10)));var o,n,a}))},beforeDestroy:function(){this.unwatchArr.forEach(function(t){return t()})}};m.install=function(t){t.component("yandex-map",m),t.component("ymap-marker",d)},"undefined"!=typeof window&&window.Vue&&window.Vue.use(m);var f=m,y=d;t.yandexMap=f,t.ymapMarker=y,t.default=m,Object.defineProperty(t,"__esModule",{value:!0})});
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(61)
+  __webpack_require__(62)
 }
-var normalizeComponent = __webpack_require__(17)
+var normalizeComponent = __webpack_require__(6)
 /* script */
-var __vue_script__ = __webpack_require__(64)
+var __vue_script__ = __webpack_require__(65)
 /* template */
-var __vue_template__ = __webpack_require__(65)
+var __vue_template__ = __webpack_require__(66)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50615,17 +50623,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(62);
+var content = __webpack_require__(63);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(16)("39aeabea", content, false, {});
+var update = __webpack_require__(17)("39aeabea", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -50641,7 +50649,7 @@ if(false) {
 }
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -50655,7 +50663,7 @@ exports.push([module.i, "\n.image[data-v-874dd178] {\n    float: left;\n    back
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 /**
@@ -50688,7 +50696,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50766,7 +50774,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50864,19 +50872,19 @@ if (false) {
 }
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(67)
+  __webpack_require__(68)
 }
-var normalizeComponent = __webpack_require__(17)
+var normalizeComponent = __webpack_require__(6)
 /* script */
-var __vue_script__ = __webpack_require__(69)
+var __vue_script__ = __webpack_require__(70)
 /* template */
-var __vue_template__ = __webpack_require__(70)
+var __vue_template__ = __webpack_require__(71)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50915,17 +50923,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(68);
+var content = __webpack_require__(69);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(16)("3933aa2c", content, false, {});
+var update = __webpack_require__(17)("3933aa2c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -50941,7 +50949,7 @@ if(false) {
 }
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -50955,7 +50963,7 @@ exports.push([module.i, "\n.image[data-v-ab9dcc3c] {\n    float: left;\n    back
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50990,7 +50998,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51041,18 +51049,152 @@ if (false) {
 }
 
 /***/ }),
-/* 71 */
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(6)
+/* script */
+var __vue_script__ = __webpack_require__(73)
+/* template */
+var __vue_template__ = __webpack_require__(74)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/ChurchMap.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7ed4c5da", Component.options)
+  } else {
+    hotAPI.reload("data-v-7ed4c5da", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['churches_url'],
+    name: "ChurchMap",
+    data: function data() {
+        return {
+            churches: []
+        };
+    },
+    methods: {
+        balloonTemplate: function balloonTemplate(church) {
+            return "\n            <h3>" + church.name + "</h3>\n             <small class=\"text-muted\">" + church.address + "</small>\n            ";
+        }
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        axios.get(this.churches_url).then(function (response) {
+            _this.churches = response.data;
+        }).catch(function (response) {
+            console.log(response);
+        });
+    }
+});
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "yandex-map",
+    {
+      staticStyle: { width: "auto", height: "750px" },
+      attrs: {
+        coords: [55.753095, 37.615363],
+        zoom: "10",
+        behaviors: ["default"],
+        controls: ["default"],
+        "map-type": "map"
+      }
+    },
+    _vm._l(_vm.churches, function(church, index) {
+      return _c("yandex-marker", {
+        key: index,
+        attrs: {
+          markerId: church.id,
+          church: church,
+          "marker-type": "placemark",
+          coords: [church.latitude, church.longitude],
+          balloonTemplate: _vm.balloonTemplate(church)
+        }
+      })
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7ed4c5da", module.exports)
+  }
+}
+
+/***/ }),
+/* 75 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 72 */,
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-!function(t,e){ true?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e(t.vueYandexMaps={})}(this,function(t){"use strict";var e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},r=function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")},o=function(){function t(t,e){for(var r=0;r<e.length;r++){var o=e[r];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}return function(e,r,o){return r&&t(e.prototype,r),o&&t(e,o),e}}(),n=function(t){if(Array.isArray(t)){for(var e=0,r=Array(t.length);e<t.length;e++)r[e]=t[e];return r}return Array.from(t)};function a(t){return t.charAt(0).toUpperCase()+t.slice(1)}function i(t,r){var o=[];return function t(r,n){if(r===n)return!0;if(r instanceof Date&&n instanceof Date)return+r==+n;if("object"!==(void 0===r?"undefined":e(r))||"object"!==(void 0===n?"undefined":e(n)))return!1;if(function(t,e){for(var r=o.length;r--;)if(!(o[r][0]!==t&&o[r][0]!==e||o[r][1]!==e&&o[r][1]!==t))return!0;return!1}(r,n))return!0;o.push([r,n]);var a=Object.keys(r),i=a.length;if(Object.keys(n).length!==i)return!1;for(;i--;)if(!t(r[a[i]],n[a[i]]))return!1;return!0}(t,r)}var s=new(function(){function t(){r(this,t),this.events={},this.ymapReady=!1,this.scriptIsNotAttached=!0}return o(t,[{key:"$on",value:function(t,e){var r=this;return this.events[t]||(this.events[t]=[]),this.events[t].push(e),function(){r.events[t]=r.events[t].filter(function(t){return e!==t})}}},{key:"$emit",value:function(t,e){var r=this.events[t];r&&r.forEach(function(t){return t(e)})}}]),t}()),c=["fullscreenControl","geolocationControl","routeEditor","rulerControl","searchControl","trafficControl","typeSelector","zoomControl"];function l(t){return 0===t.filter(function(t){return![].concat(c,["default"]).includes(t)}).length}function u(t,e){var r=a(t);if(!e)return r;switch(r){case"Placemark":return"Point";case"Polyline":return"LineString";default:return r}}function p(t,r){var o=r?{type:"Feature",id:t.properties.markerId,geometry:{type:t.markerType,coordinates:t.coords},properties:t.properties,options:t.options}:new ymaps[t.markerType](t.coords,t.properties,t.options);return o.clusterName=t.clusterName,r||function(t,r){if(t&&"object"===(void 0===t?"undefined":e(t)))for(var o in t)r.events.add(o,t[o])}(t.callbacks,o),o}var m={data:function(){return{ymapEventBus:s,ymapId:"yandexMap"+Math.round(1e5*Math.random()),myMap:{},style:this.ymapClass?"":"width: 100%; height: 100%;"}},props:{coords:{type:Array,validator:function(t){return!t.filter(function(t){return isNaN(t)}).length},required:!0},zoom:{validator:function(t){return!isNaN(t)},default:18},clusterOptions:{type:Object,default:function(){return{}}},clusterCallbacks:{type:Object,default:function(){return{}}},behaviors:{type:Array,default:function(){return["default"]}},controls:{type:Array,default:function(){return["default"]},validator:function(t){return l(t)}},detailedControls:{type:Object,validator:function(t){return l(Object.keys(t))}},scrollZoom:{type:Boolean,default:!0},zoomControl:Object,mapType:{type:String,default:"map",validator:function(t){return["map","satellite","hybrid"].includes(t)}},placemarks:{type:Array,default:function(){return[]}},useObjectManager:{type:Boolean,default:!1},objectManagerClusterize:{type:Boolean,default:!0},ymapClass:String,initWithoutMarkers:{type:Boolean,default:!0},mapLink:String},computed:{coordinates:function(){return this.coords.map(function(t){return+t})}},methods:{init:function(){var t=this;if(window.ymaps&&ymaps.GeoObjectCollection&&(this.initWithoutMarkers||this.$slots.default||this.placemarks.length)){this.$emit("map-initialization-started");for(var e=[],r=this.$slots.default&&this.$slots.default.map(function(t){var e=t.componentOptions&&t.componentOptions.propsData;if(e){var r={};if(e.balloonTemplate){r={balloonContentLayout:ymaps.templateLayoutFactory.createClass(e.balloonTemplate)}}var o={markerId:e.markerId,markerType:e.markerType,coords:function t(e){return e.map(function(e){return Array.isArray(e)?t(e):+e})}(e.coords),hintContent:e.hintContent,markerFill:e.markerFill,circleRadius:+e.circleRadius,clusterName:e.clusterName,markerStroke:e.markerStroke,balloon:e.balloon,callbacks:e.callbacks,properties:e.properties,options:e.options,balloonOptions:r};return e.icon&&"default#image"===e.icon.layout?(o.iconLayout=e.icon.layout,o.iconImageHref=e.icon.imageHref,o.iconImageSize=e.icon.imageSize,o.iconImageOffset=e.icon.imageOffset):o.icon=e.icon,o}}).filter(function(t){return t&&t.markerType})||[],o=0;o<r.length;o++){var i=r[o],s=u(i.markerType,this.useObjectManager),c={hintContent:i.hintContent,iconContent:i.icon&&i.icon.content,markerId:i.markerId},l=i.balloon?{balloonContentHeader:i.balloon.header,balloonContentBody:i.balloon.body,balloonContentFooter:i.balloon.footer}:{},m=Object.assign(c,l,i.properties),d=i.iconLayout?{iconLayout:i.iconLayout,iconImageHref:i.iconImageHref,iconImageSize:i.iconImageSize,iconImageOffset:i.iconImageOffset}:{preset:i.icon&&"islands#"+(v=i,(v.icon.color||"blue")+(v.icon.glyph?a(v.icon.glyph):v.icon.content?"Stretchy":""))+"Icon"},f=i.markerStroke?{strokeColor:i.markerStroke.color||"0066ffff",strokeOpacity:parseFloat(i.markerStroke.opacity)>=0?parseFloat(i.markerStroke.opacity):1,strokeStyle:i.markerStroke.style,strokeWidth:parseFloat(i.markerStroke.width)>=0?parseFloat(i.markerStroke.width):1}:{},y=i.markerFill?{fill:i.markerFill.enabled||!0,fillColor:i.markerFill.color||"0066ff99",fillOpacity:parseFloat(i.markerFill.opacity)>=0?parseFloat(i.markerFill.opacity):1,fillImageHref:i.markerFill.imageHref||""}:{},h=Object.assign(d,f,y,i.balloonOptions,i.options);"Circle"===s&&(i.coords=[i.coords,i.circleRadius]);var b=p({properties:m,options:h,markerType:s,coords:i.coords,clusterName:i.clusterName,callbacks:i.callbacks},this.useObjectManager);e.push(b)}var v;if(this.placemarks){var k=this.useObjectManager?"Point":"Placemark";this.placemarks.forEach(function(r){var o=r.properties,n=r.options,a=void 0===n?{}:n,i=r.coords,s=r.clusterName,c=r.callbacks,l=r.balloonTemplate;if(l){var u=ymaps.templateLayoutFactory.createClass(l);a.balloonContentLayout=u}var m=p({properties:o,options:a,markerType:k,coords:i,clusterName:s,callbacks:c},t.useObjectManager);e.push(m)})}if(this.myMap=new ymaps.Map(this.ymapId,{center:this.coordinates,zoom:+this.zoom,behaviors:this.behaviors,controls:this.controls,type:"yandex#"+this.mapType}),this.zoomControl&&(this.myMap.controls.remove("zoomControl"),this.myMap.controls.add(new ymaps.control.ZoomControl(this.zoomControl))),this.detailedControls){Object.keys(this.detailedControls).forEach(function(e){t.myMap.controls.remove(e),t.myMap.controls.add(e,t.detailedControls[e])})}!1===this.scrollZoom&&this.myMap.behaviors.disable("scrollZoom");var g={options:this.clusterOptions,callbacks:this.clusterCallbacks,map:this.myMap,useObjectManager:this.useObjectManager,objectManagerClusterize:this.objectManagerClusterize};!function(t,e){var r=e.options,o=e.callbacks,a=e.map,i=e.useObjectManager,s=e.objectManagerClusterize,c={},l=[],u=!0,p=!1,m=void 0;try{for(var d,f=t[Symbol.iterator]();!(u=(d=f.next()).done);u=!0){var y=d.value;y.clusterName?c[y.clusterName]=c[y.clusterName]?[].concat(n(c[y.clusterName]),[y]):[y]:l.push(y)}}catch(t){p=!0,m=t}finally{try{!u&&f.return&&f.return()}finally{if(p)throw m}}for(var h in c){var b=r[h]||{},v=o[h]||{},k=b.layout||"\n      <div>{{ properties.balloonContentHeader }}</div>\n      <div>{{ properties.balloonContentBody }}</div>\n      <div>{{ properties.balloonContentFooter }}</div>\n    ";if(b.clusterBalloonItemContentLayout=ymaps.templateLayoutFactory.createClass(k),i){var g=new ymaps.ObjectManager(Object.assign({clusterize:s},b));for(var C in v)g.clusters.events.add(C,v[C]);g.add(c[h]),a.geoObjects.add(g)}else{var O=new ymaps.Clusterer(b);for(var M in v)O.events.add(M,v[M]);O.add(c[h]),a.geoObjects.add(O)}}if(l.length){var j=i?new ymaps.ObjectManager({clusterize:!1}):new ymaps.GeoObjectCollection;l.forEach(function(t){return j.add(t)}),a.geoObjects.add(j)}}(e,g),this.$emit("map-was-initialized",this.myMap)}}},watch:{coordinates:function(t){this.myMap.panTo&&this.myMap.panTo(t)},placemarks:function(){window.ymaps&&(this.myMap.destroy&&this.myMap.destroy(),this.init())},zoom:function(){this.myMap.setZoom(this.zoom)}},render:function(t){return t("section",{class:"ymap-container"},[t("div",{attrs:{id:this.ymapId,class:this.ymapClass,style:this.style}}),t("div",{attrs:{class:"ymap-markers"}},[this.$slots.default])])},mounted:function(){var t=this;if(this.observer=new MutationObserver(function(t){this.myMap.destroy&&this.myMap.destroy(),this.init()}.bind(this)),this.observer.observe(document.querySelector(".ymap-markers"),{attributes:!0,childList:!0,characterData:!0,subtree:!0}),this.ymapEventBus.scriptIsNotAttached){var e=document.createElement("SCRIPT"),r=this.mapLink||"https://api-maps.yandex.ru/2.1/?lang=ru_RU";e.setAttribute("src",r),e.setAttribute("async",""),e.setAttribute("defer",""),document.body.appendChild(e),this.ymapEventBus.scriptIsNotAttached=!1,e.onload=function(){t.ymapEventBus.ymapReady=!0,t.ymapEventBus.$emit("scriptIsLoaded")}}this.ymapEventBus.ymapReady?ymaps.ready(this.init):this.ymapEventBus.$on("scriptIsLoaded",function(){t.ymapEventBus.initMap=function(){t.myMap.destroy(),t.init()},ymaps.ready(t.init)})},beforeDestroy:function(){this.myMap.geoObjects&&this.myMap.geoObjects.removeAll(),this.observer.disconnect()}},d={data:function(){return{ymapEventBus:s,unwatchArr:[]}},props:{coords:{type:Array,required:!0},hintContent:String,icon:Object,balloon:Object,markerType:{type:String,required:!0},markerFill:Object,markerStroke:Object,clusterName:String,circleRadius:{validator:function(t){return!isNaN(t)},default:1e3},callbacks:Object,balloonTemplate:String,markerId:{type:[String,Number],required:!0},properties:Object,options:Object},render:function(){},mounted:function(){var t=this;for(var e in this.$props)this.unwatchArr.push(this.$watch(e,function(e,r){return o=e,n=r,a=t.ymapEventBus,void(i(o,n)||(a.rerender&&clearTimeout(a.rerender),a.rerender=setTimeout(function(){return a.initMap&&a.initMap()},10)));var o,n,a}))},beforeDestroy:function(){this.unwatchArr.forEach(function(t){return t()})}};m.install=function(t){t.component("yandex-map",m),t.component("ymap-marker",d)},"undefined"!=typeof window&&window.Vue&&window.Vue.use(m);var f=m,y=d;t.yandexMap=f,t.ymapMarker=y,t.default=m,Object.defineProperty(t,"__esModule",{value:!0})});
-
 
 /***/ })
 /******/ ]);
