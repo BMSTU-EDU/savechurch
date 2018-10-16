@@ -9,6 +9,7 @@ Vue.component('vue-gallery', VueGallery);
 Vue.component('upload-images', require('./components/UploadImages'));
 Vue.component('image-gallery', require('./components/ImageGallery'));
 Vue.component('church-map', require('./components/ChurchMap'));
+Vue.component('add-contact', require('./components/AddContact'));
 Vue.component('yandex-map', yandexMap);
 Vue.component('yandex-marker', ymapMarker);
 

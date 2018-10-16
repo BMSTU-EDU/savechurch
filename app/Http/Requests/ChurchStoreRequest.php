@@ -32,7 +32,16 @@ class ChurchStoreRequest extends FormRequest
 			'longitude' => 'nullable|numeric|required_with:latitude',
 			'description' => 'nullable',
 			'purpose' => 'nullable',
-			'images' => 'required'
+			'images' => 'required|array|min:1',
+			'contacts' => 'required|array|min:1',
+			'contacts.*.name' => 'required|max:150',
+			'contacts.*.role' => 'required|max:150',
+			'contacts.*.email' => 'sometimes|max:150|required_without_all:contacts.*.phone,contacts.*.vk,contacts.*.facebook',
+			'contacts.*.phone' => 'sometimes|max:150|required_without_all:contacts.*.email,contacts.*.vk,contacts.*.facebook',
+			'contacts.*.vk' => 'sometimes|max:150|required_without_all:contacts.*.email,contacts.*.phone,contacts.*.facebook',
+			'contacts.*.facebook' => 'sometimes|max:150|required_without_all:contacts.*.phone,contacts.*.vk,contacts.*.email',
+			'contacts.*.picture' => 'required|max:150',
+
 		];
 	}
 }

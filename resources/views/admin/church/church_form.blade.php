@@ -73,6 +73,12 @@
             </span>
         @endif
     </div>
+    <add-contact button_text="{{ __('churches.admin.create_form.add_image_contact') }}"
+         add_contact_text="{{ __('churches.admin.create_form.add_contact_text') }}"
+         income_contacts="[]"
+         delete_url=""
+         contact_image_url_post=""
+    ></add-contact>
     @if(!empty($errors->has('images')))
         <div class="alert alert-danger" role="alert">
             {{$errors->first('images')}}

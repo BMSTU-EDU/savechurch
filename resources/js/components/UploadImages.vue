@@ -45,9 +45,9 @@
                 if (event.target.files && event.target.files[0]) {
                     if (event.target.files[0].size > 1024 * 1024) {
                         this.errors.push("File is to big. Maximum 1 mb.");
+                        return;
                     }
                     var formData = new FormData();
-                    console.log(this.listUpload);
                     formData.append('image', event.target.files[0], event.target.files[0].name);
                     axios
                         .post(this.image_url_post, formData)
