@@ -12,8 +12,8 @@ return [
             'description' => 'Описание',
 			'purpose' => 'Цель пожертвований',
 			'add_image'	=> 'Добавить изображение',
-			'add_image_contact'	=> 'Добавить фото контакта',
-			'add_contact_text'	=> 'Добавить контакт',
+			'contact_information'	=> 'Информация о контактном лице',
+			'images'	=> 'Изображения'
         ],
         'list' => [
             'create' => 'Создать новую запись',

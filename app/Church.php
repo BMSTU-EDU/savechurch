@@ -20,11 +20,15 @@ class Church extends Model
         'longitude'
 	];
 
-	protected $with = ['images'];
+	protected $with = ['images', 'contact'];
 
 	public function images()
 	{
 		return $this->hasMany(Image::class, 'church_id', 'id');
+	}
+
+	public function contact(){
+		return $this->hasOne(Contact::class, 'church_id', 'id');
 	}
 
 	public function getImageUrlArrayAttribute()

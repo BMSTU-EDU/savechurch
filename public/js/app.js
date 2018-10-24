@@ -16129,7 +16129,7 @@ Vue.component('vue-gallery', __WEBPACK_IMPORTED_MODULE_0_vue_gallery___default.a
 Vue.component('upload-images', __webpack_require__(61));
 Vue.component('image-gallery', __webpack_require__(67));
 Vue.component('church-map', __webpack_require__(72));
-Vue.component('add-contact', __webpack_require__(75));
+Vue.component('add-contact-image', __webpack_require__(75));
 Vue.component('yandex-map', __WEBPACK_IMPORTED_MODULE_1_vue_yandex_maps__["yandexMap"]);
 Vue.component('yandex-marker', __WEBPACK_IMPORTED_MODULE_1_vue_yandex_maps__["ymapMarker"]);
 
@@ -51210,7 +51210,7 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-99d01d2c"
+var __vue_scopeId__ = "data-v-7b788ac1"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -51221,7 +51221,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/AddContact.vue"
+Component.options.__file = "resources/js/components/AddContactImage.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -51230,9 +51230,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-99d01d2c", Component.options)
+    hotAPI.createRecord("data-v-7b788ac1", Component.options)
   } else {
-    hotAPI.reload("data-v-99d01d2c", Component.options)
+    hotAPI.reload("data-v-7b788ac1", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -51253,13 +51253,13 @@ var content = __webpack_require__(77);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(7)("08d28ad0", content, false, {});
+var update = __webpack_require__(7)("3ad53395", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-99d01d2c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddContact.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-99d01d2c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddContact.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b788ac1\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddContactImage.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7b788ac1\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddContactImage.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -51277,7 +51277,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.image[data-v-99d01d2c] {\n    float: left;\n    background-size: cover;\n    cursor: pointer;\n    width: 150px;\n    height: 150px;\n    background-repeat: no-repeat;\n    background-position: center center;\n    border: 1px solid #ebebeb;\n    margin: 5px;\n}\n", ""]);
+exports.push([module.i, "\n.image[data-v-7b788ac1] {\n    float: left;\n    background-size: cover;\n    cursor: pointer;\n    width: 150px;\n    height: 150px;\n    background-repeat: no-repeat;\n    background-position: center center;\n    border: 1px solid #ebebeb;\n    margin: 5px;\n}\n", ""]);
 
 // exports
 
@@ -51299,68 +51299,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['button_text', 'add_contact_text', 'income_contacts', 'delete_url', 'contact_image_url_post'],
-    name: "AddContact",
+    props: ['income_image'],
+    name: "AddContactImage",
     data: function data() {
         return {
-            contacts: [],
-            errors: [],
-            images: [],
-            id_counter: 0
+            contact_image: ''
         };
     },
     mounted: function mounted() {
-        this.contacts = JSON.parse(this.income_contacts);
+        if (this.income_image !== '') {
+            this.contact_image = this.income_image;
+        }
     },
     methods: {
-        selectPicture: function selectPicture(index, event) {
-            this.readURL(index, event.target);
+        selectPicture: function selectPicture(event) {
+            this.readURL(event.target);
         },
-        readURL: function readURL(index, input) {
+        readURL: function readURL(input) {
             if (input.files && input.files[0]) {
                 if (event.target.files[0].size > 512 * 1024) {
                     this.errors.push("File is to big. Maximum 1 mb.");
@@ -51369,17 +51326,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    this.images.splice(index, 1, e.target.result);
+                    this.contact_image = e.target.result;
                 }.bind(this);
 
                 reader.readAsDataURL(input.files[0]);
             }
-        },
-
-        deleteContact: function deleteContact(contactIndex) {},
-        addContact: function addContact() {
-            this.contacts.push({ index: this.id_counter });
-            this.id_counter++;
         }
     }
 });
@@ -51392,135 +51343,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "div",
-        { staticClass: "btn btn-link", on: { click: _vm.addContact } },
-        [_vm._v(_vm._s(_vm.add_contact_text))]
-      ),
-      _vm._v(" "),
-      _vm._l(_vm.contacts, function(contact) {
-        return _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-3" }, [
-            _c("label", {
-              staticClass: "image",
-              style: {
-                backgroundImage: "url(" + _vm.images[contact.index] + ")"
-              },
-              attrs: { for: "image_" + contact.index }
-            }),
-            _vm._v(" "),
-            _c("input", {
-              staticStyle: { display: "none" },
-              attrs: {
-                type: "file",
-                name: "contact[" + contact.index + "]['image']",
-                id: "image_" + contact.index
-              },
-              on: {
-                change: function($event) {
-                  _vm.selectPicture(contact.index, $event)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-9" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-6 form-group" }, [
-                _c("input", {
-                  staticClass: "form-control form-control-sm",
-                  attrs: {
-                    type: "text",
-                    name: "contact[" + contact.index + "]['name']",
-                    placeholder: "ФИО"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6 form-group" }, [
-                _c("input", {
-                  staticClass: "form-control form-control-sm",
-                  attrs: {
-                    type: "text",
-                    name: "contact[" + contact.index + "]['role']",
-                    placeholder: "Роль в проекте"
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-6 form-group" }, [
-                _c("input", {
-                  staticClass: "form-control form-control-sm",
-                  attrs: {
-                    type: "text",
-                    name: "contact[" + contact.index + "]['email']",
-                    placeholder: "E-Mail"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6 form-group" }, [
-                _c("input", {
-                  staticClass: "form-control form-control-sm",
-                  attrs: {
-                    type: "text",
-                    name: "contact[" + contact.index + "]['phone']",
-                    placeholder: "Телефон"
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-6 form-group" }, [
-                _c("input", {
-                  staticClass: "form-control form-control-sm",
-                  attrs: {
-                    type: "text",
-                    name: "contact[" + contact.index + "]['vk']",
-                    placeholder: "Страница VK"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6 form-group" }, [
-                _c("input", {
-                  staticClass: "form-control form-control-sm",
-                  attrs: {
-                    type: "text",
-                    name: "contact[" + contact.index + "]['facebook']",
-                    placeholder: "Страница Facebook"
-                  }
-                })
-              ])
-            ])
-          ])
-        ])
-      }),
-      _vm._v(" "),
-      _vm.errors.length > 0
-        ? _c(
-            "div",
-            { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-            [
-              _c(
-                "ul",
-                { staticClass: "m-0" },
-                _vm._l(_vm.errors, function(error) {
-                  return _c("li", [_vm._v(_vm._s(error))])
-                })
-              )
-            ]
-          )
-        : _vm._e()
-    ],
-    2
-  )
+  return _c("div", [
+    _c("label", {
+      staticClass: "image",
+      style: { backgroundImage: "url(" + _vm.contact_image + ")" },
+      attrs: { for: "contact_image" }
+    }),
+    _vm._v(" "),
+    _c("input", {
+      staticStyle: { display: "none" },
+      attrs: { type: "file", name: "contact_image", id: "contact_image" },
+      on: {
+        change: function($event) {
+          _vm.selectPicture($event)
+        }
+      }
+    })
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -51528,7 +51367,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-99d01d2c", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-7b788ac1", module.exports)
   }
 }
 

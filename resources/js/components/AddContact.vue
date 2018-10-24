@@ -6,7 +6,7 @@
                 <label class="image" :for="'image_' + contact.index"
                        :style="{ backgroundImage: 'url(' + images[contact.index] + ')'}"
                 ></label>
-                <input type="file" :name="'contact[' + contact.index +'][\'image\']'" :id="'image_' + contact.index"
+                <input type="file" :name="'contacts['+ contact.index +'][\'image\']'" :id="'image_' + contact.index"
                        style="display: none"
                        v-on:change="selectPicture(contact.index, $event)"/>
             </div>
@@ -14,31 +14,32 @@
                 <div class="row">
                     <div class="col-6 form-group">
                         <input type="text" class="form-control form-control-sm"
-                               :name="'contact[' + contact.index +'][\'name\']'" placeholder="ФИО"/>
+                               :name="'contacts['+ contact.index +'][\'name\']'" placeholder="ФИО"/>
                     </div>
                     <div class="col-6 form-group">
                         <input type="text" class="form-control form-control-sm"
-                               :name="'contact[' + contact.index +'][\'role\']'" placeholder="Роль в проекте"/>
+                               :name="'contacts['+ contact.index +'][\'role\']'" placeholder="Роль в проекте"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6 form-group">
                         <input type="text" class="form-control form-control-sm"
-                               :name="'contact[' + contact.index +'][\'email\']'" placeholder="E-Mail"/>
+                               :name="'contacts[' + contact.index +'][\'email\']'" placeholder="E-Mail"/>
                     </div>
                     <div class="col-6 form-group">
                         <input type="text" class="form-control form-control-sm"
-                               :name="'contact[' + contact.index +'][\'phone\']'" placeholder="Телефон"/>
+                               :name="'contacts[' + contact.index +'][\'phone\']'" placeholder="Телефон"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6 form-group">
-                        <input type="text" class="form-control form-control-sm" :name="'contact[' + contact.index +'][\'vk\']'"
+                        <input type="text" class="form-control form-control-sm"
+                               :name="'contact[' + contact.index +'][\'vk\']'"
                                placeholder="Страница VK"/>
                     </div>
                     <div class="col-6 form-group">
                         <input type="text" class="form-control form-control-sm"
-                               :name="'contact[' + contact.index +'][\'facebook\']'" placeholder="Страница Facebook"/>
+                               :name="'contacts[' + contact.index +'][\'facebook\']'" placeholder="Страница Facebook"/>
                     </div>
                 </div>
             </div>

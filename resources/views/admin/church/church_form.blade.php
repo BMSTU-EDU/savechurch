@@ -73,12 +73,87 @@
             </span>
         @endif
     </div>
-    <add-contact button_text="{{ __('churches.admin.create_form.add_image_contact') }}"
-         add_contact_text="{{ __('churches.admin.create_form.add_contact_text') }}"
-         income_contacts="[]"
-         delete_url=""
-         contact_image_url_post=""
-    ></add-contact>
+    <h4>{{ __('churches.admin.create_form.contact_information') }}</h4>
+    @if(!empty($errors->has('contact_image')))
+        <div class="alert alert-danger" role="alert">
+            {{$errors->first('contact_image')}}
+        </div>
+    @endif
+    <div class="row mb-4">
+        <div class="col-3">
+            <add-contact-image
+                    income_image="{{ old('contact_image') ?? $church->contact->image_url ?? '' }}"></add-contact-image>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col-6 form-group">
+                    <input type="text" name="contact_name" placeholder="ФИО"
+                           class="form-control {{ $errors->has('contact_name') ? ' is-invalid' : '' }}"
+                           value="{{ old('contact_name') ?? $church->contact->name ?? ''}}"/>
+                    @if ($errors->has('contact_name'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('contact_name') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-6 form-group">
+                    <input type="text" name="contact_role" placeholder="Роль в проекте"
+                           class="form-control {{ $errors->has('contact_role') ? ' is-invalid' : '' }}"
+                           value="{{ old('contact_role') ?? $church->contact->role ?? ''}}"/>
+                    @if ($errors->has('contact_role'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('contact_role') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 form-group">
+                    <input type="text" name="contact_email" placeholder="E-Mail"
+                           class="form-control {{ $errors->has('contact_email') ? ' is-invalid' : '' }}"
+                           value="{{ old('contact_email') ?? $church->contact->email ?? ''}}"/>
+                    @if ($errors->has('contact_email'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('contact_email') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-6 form-group">
+                    <input type="text" name="contact_phone" placeholder="Телефон"
+                           class="form-control {{ $errors->has('contact_phone') ? ' is-invalid' : '' }}"
+                           value="{{ old('contact_phone') ?? $church->contact->phone ?? ''}}"/>
+                    @if ($errors->has('contact_phone'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('contact_phone') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 form-group">
+                    <input type="text" name="contact_vk" placeholder="Страница VK"
+                           class="form-control {{ $errors->has('contact_vk') ? ' is-invalid' : '' }}"
+                           value="{{ old('contact_vk') ?? $church->contact->vk ?? ''}}"/>
+                    @if ($errors->has('contact_vk'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('contact_vk') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-6 form-group">
+                    <input type="text" name="contact_facebook" placeholder="Страница Facebook"
+                           class="form-control {{ $errors->has('contact_facebook') ? ' is-invalid' : '' }}"
+                           value="{{ old('contact_facebook') ?? $church->contact->facebook ?? ''}}"/>
+                    @if ($errors->has('contact_facebook'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $errors->first('contact_facebook') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4>{{ __('churches.admin.create_form.images') }}</h4>
     @if(!empty($errors->has('images')))
         <div class="alert alert-danger" role="alert">
             {{$errors->first('images')}}

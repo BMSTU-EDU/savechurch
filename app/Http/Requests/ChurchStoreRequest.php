@@ -33,15 +33,13 @@ class ChurchStoreRequest extends FormRequest
 			'description' => 'nullable',
 			'purpose' => 'nullable',
 			'images' => 'required|array|min:1',
-			'contacts' => 'required|array|min:1',
-			'contacts.*.name' => 'required|max:150',
-			'contacts.*.role' => 'required|max:150',
-			'contacts.*.email' => 'sometimes|max:150|required_without_all:contacts.*.phone,contacts.*.vk,contacts.*.facebook',
-			'contacts.*.phone' => 'sometimes|max:150|required_without_all:contacts.*.email,contacts.*.vk,contacts.*.facebook',
-			'contacts.*.vk' => 'sometimes|max:150|required_without_all:contacts.*.email,contacts.*.phone,contacts.*.facebook',
-			'contacts.*.facebook' => 'sometimes|max:150|required_without_all:contacts.*.phone,contacts.*.vk,contacts.*.email',
-			'contacts.*.picture' => 'required|max:150',
-
+			'contact_name' => 'required|max:150',
+			'contact_role' => 'required|max:150',
+			'contact_email' => 'sometimes|max:150|required_without_all:contact_phone,contacts_vk,contacts_facebook',
+			'contact_phone' => 'sometimes|max:150|required_without_all:contacts_email,contacts_vk,contacts_facebook',
+			'contact_vk' => 'sometimes|max:150|required_without_all:contacts_email,contacts_phone,contacts_facebook',
+			'contact_facebook' => 'sometimes|max:150|required_without_all:contacts_phone,contacts_vk,contacts_email',
+			'contact_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:512'
 		];
 	}
 }
